@@ -24,9 +24,11 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
     Box(modifier = modifier.fillMaxSize() ){
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally)
+        {
             Button(onClick = {
-                navController.navigate("addList")
+                //navController.navigate("addList")
+                navController.navigate("addBeneficiario")
             }) {
                 Text(text = "todos utilizadores")
             }

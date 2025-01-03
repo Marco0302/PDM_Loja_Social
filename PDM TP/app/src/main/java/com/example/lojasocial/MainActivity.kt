@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.lojasocial.ui.theme.LojaSocialTheme
+import com.example.lojasocial.ui.theme.beneficiario.AddBeneficiarioView
 import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.login.LoginView
 import com.example.lojasocial.ui.theme.register.RegisterView
@@ -54,9 +55,13 @@ class MainActivity : ComponentActivity() {
                         composable("lisTransactions"){
                             ListTransactionView(navController)
                         }
-                        composable("addTransactions"){
+                        composable("addTransacao"){
                             AddTransactionView(navController)
                         }
+                        composable("addBeneficiario"){
+                            AddBeneficiarioView(navController)
+                        }
+
 
                     }
                 }

@@ -55,7 +55,7 @@ fun ListTransactionView(navController: NavController) {
         }
 
         FloatingActionButton(
-            onClick = { navController.navigate("addTransactions") },
+            onClick = { navController.navigate("addTransacao") },
             containerColor = Color.Blue,
             modifier = Modifier
                 .align(Alignment.BottomEnd)

@@ -1,5 +1,6 @@
 package com.example.lojasocial.ui.theme.beneficiario
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,10 +27,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
-    val viewModel: RegisterViewModel = viewModel()
+fun AddBeneficiarioView(navController: NavController = rememberNavController()) {
+    val viewModel: AddBeneficiarioViewModel = viewModel()
     val state by viewModel.state
-    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -41,26 +41,10 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = state.name,
-            onValueChange = viewModel::onNameChange,
+            value = state.nome,
+            onValueChange = viewModel::onNomeChange,
             label = { Text("nome") },
             leadingIcon = { Icon(Icons.Filled.Person, contentDescription = "Nome Icon") },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier.fillMaxWidth(0.8f)
-                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextField(
-            value = state.email,
-            onValueChange = viewModel::onEmailChange,
-            label = { Text("email") },
-            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email Icon") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -76,7 +60,7 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
             value = state.telefone,
             onValueChange = viewModel::onTelefoneChange,
             label = { Text("telefone") },
-            leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = "Phone Icon") },
+            leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = "Telefone Icon") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -89,91 +73,35 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = state.password,
-            onValueChange = viewModel::onPasswordChange,
-            label = { Text("password") },
-            leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Password Icon") },
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Lock
-                else Icons.Filled.Lock
-
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, contentDescription = "Password Visibility Icon")
-                }
-            },
+            value = state.agregadoFamiliar,
+            onValueChange = viewModel::onAgregadoFamiliarChange,
+            label = { Text("agregado familiar") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
             shape = RoundedCornerShape(20.dp),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(0.8f)
                 .shadow(4.dp, shape = RoundedCornerShape(20.dp))
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
-            value = state.confirmPassword,
-            onValueChange = viewModel::onConfirmPasswordChange,
-            label = { Text("confirmar password") },
-            leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "confirmar Password Icon") },
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Lock
-                else Icons.Filled.Lock
-
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, contentDescription = "password Visibility Icon")
-                }
-            },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(20.dp),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(0.8f)
-                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                viewModel.register(onRegisterSuccess = onRegisterSuccess, onRegisterFailure = { message ->
-                    state.errorMessage = message
-                })
+                if (state.nome.isNotEmpty() && state.telefone.isNotEmpty())
+                {
+                    viewModel.create(onSuccess = { navController.popBackStack() })
+                } else
+                {
+                    state.errorMessage = "Preencha todos os campos."
+                }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier.fillMaxWidth(0.8f),
-            enabled = state.name.isNotEmpty() &&
-                    state.email.isNotEmpty() &&
-                    state.password.isNotEmpty() &&
-                    state.password == state.confirmPassword &&
-                    !state.isLoading
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+            enabled = !state.isLoading
         ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    color = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                Text(text = "registar")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = {
-            navController.navigate("login")
-        },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier.fillMaxWidth(0.8f),) {
-            Text("voltar")
+            Text(if (state.isLoading) "Carregando..." else "registar beneficiário")
         }
 
         if (state.errorMessage != null) {
@@ -190,5 +118,5 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewRegisterView(){
-    RegisterView(navController = rememberNavController(), onRegisterSuccess = {})
+    AddBeneficiarioView(navController = rememberNavController())
 }
