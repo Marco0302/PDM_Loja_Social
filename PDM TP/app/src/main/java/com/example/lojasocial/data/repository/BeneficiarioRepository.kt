@@ -3,6 +3,7 @@ package com.example.lojasocial.data.repository
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.lojasocial.data.models.Beneficiario
+import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -53,7 +54,10 @@ object BeneficiarioRepository {
         }
     }
 
-    fun getAll(onSuccess: (List<Beneficiario>) -> Unit) {
+    fun getAll(
+        onSuccess: (List<Beneficiario>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         db.collection("beneficiario")
             .addSnapshotListener { value, error ->
                 if (error != null) {

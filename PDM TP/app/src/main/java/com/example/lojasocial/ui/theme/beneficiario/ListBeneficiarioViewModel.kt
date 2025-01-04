@@ -4,23 +4,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.lojasocial.data.models.Beneficiario
 import com.example.lojasocial.data.repository.BeneficiarioRepository
+import com.example.lojasocial.data.repository.HorariosRepository
 
 data class ListBeneficiarioItemsState(
-    val listItems: List<Beneficiario> = emptyList(),
-    //val items: List<Item> = emptyList(),
+    val list: List<Beneficiario> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val errorMessage: String? = null
 )
 
 class ShowListItemsViewModel : ViewModel(){
     var state = mutableStateOf(ListBeneficiarioItemsState())
-        private set
 
-    fun loadListItems(){
-        BeneficiarioRepository.getAll{ listItems ->
-            state.value = state.value.copy(
-                listItems = listItems
-            )
-        }
+    fun loadListBeneficiario() {
+        BeneficiarioRepository.getAll(
+            onSuccess = { list -> state.value = state.value.copy(list = list) },
+            onFailure = { exception -> state.value = state.value.copy(errorMessage = exception.message) }
+        )
     }
+
 }

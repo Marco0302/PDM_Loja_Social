@@ -33,7 +33,7 @@ fun ListTransactionView(navController: NavController) {
             LazyColumn(contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 itemsIndexed(
-                    items = state.listTransaction
+                    items = state.list
                 ) { _, item ->
                     TransactionCard (
                         descricao = item.descricao,
@@ -62,6 +62,6 @@ fun ListTransactionView(navController: NavController) {
     }
 
     LaunchedEffect (key1 = Unit){
-        viewModel.loadListTransaction()
+        viewModel.loadListTransacao()
     }
 }

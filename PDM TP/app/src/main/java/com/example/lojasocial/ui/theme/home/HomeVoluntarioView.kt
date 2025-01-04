@@ -27,14 +27,6 @@ import com.example.lojasocial.ui.theme.login.LoginViewModel
 fun HomeViewVoluntario(navController: NavController, modifier: Modifier = Modifier){
     val viewModelLogin = LoginViewModel()
 
-    Text(
-        text = "Vista Voluntário",
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Start,
-        modifier = Modifier.fillMaxWidth()
-            .padding(start = 35.dp,top = 35.dp)
-    )
-
     Box(modifier = modifier.fillMaxSize() ){
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -47,21 +39,9 @@ fun HomeViewVoluntario(navController: NavController, modifier: Modifier = Modifi
             }
 
             Button(onClick = {
-                navController.navigate("lisTransactions")
-            }) {
-                Text(text = "transações monetárias")
-            }
-
-            Button(onClick = {
-                navController.navigate("updateHorariosFuncionamento")
+                navController.navigate("listHorarioFuncionamento")
             }) {
                 Text(text = "horários de funcionamento")
-            }
-
-            Button(onClick = {
-                navController.navigate("showLists")
-            }) {
-                Text(text = "relatórios estatísticos")
             }
 
             Button(onClick = { viewModelLogin.logout(

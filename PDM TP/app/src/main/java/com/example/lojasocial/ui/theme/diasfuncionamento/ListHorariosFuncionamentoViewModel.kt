@@ -10,7 +10,7 @@ import com.example.lojasocial.data.repository.TransacaoRepository
 data class ListHorarioFuncionamentoState(
     val list: List<HorarioFuncionamento> = emptyList(),
     val isLoading: Boolean = false,
-    var errorMessage: String? = null
+    val errorMessage: String? = null
 )
 
 class ListHorarioFuncionamentoViewModel : ViewModel() {
@@ -19,9 +19,7 @@ class ListHorarioFuncionamentoViewModel : ViewModel() {
     fun loadListHorariosFuncionamento() {
         HorariosRepository.getHorarios(
             onSuccess = { list -> state.value = state.value.copy(list = list) },
-            onFailure = { exception ->
-                //erro ${exception.message}")
-            }
+            onFailure = { exception -> state.value = state.value.copy(errorMessage = exception.message) }
         )
     }
 

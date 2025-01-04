@@ -33,7 +33,8 @@ class HorariosViewModel : ViewModel() {
     fun addHorario(dataString: String, numeroMaxVoluntarios: Int) {
         val horario = HorarioFuncionamento(
             data = dataString,
-            numeroMaxVoluntarios = numeroMaxVoluntarios
+            numeroMaxVoluntarios = numeroMaxVoluntarios,
+            vagasDisponiveis = numeroMaxVoluntarios
         )
         HorariosRepository.addHorario(
             horario,

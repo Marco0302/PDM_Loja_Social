@@ -34,9 +34,14 @@ import java.util.Locale
 
 
 @Composable
-fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String) {
-    var itemCount by remember { mutableIntStateOf(0) }
+fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String, vagasDisponiveis: String) {
     var menuExpanded by remember { mutableStateOf(false) }
+
+    val vagas = vagasDisponiveis.toIntOrNull() ?: 0
+    val cardColor = if (vagas == 0) Color(0xFFFFEBEE) else Color(0xFFE8F5E9) // Vermelho claro ou cinza claro
+
+    //verde claro 0xFFE8F5E9
+    //vermelho claro 0xFFFFEBEE
 
     Card(
         modifier = Modifier
@@ -45,12 +50,12 @@ fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String) {
             .padding(horizontal = 8.dp, vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+        colors = CardDefaults.cardColors(containerColor = cardColor) // Usa a cor baseada nas vagas
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
-                .background(Color(0xFFF5F5F5)),
+                .background(cardColor),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -72,12 +77,16 @@ fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.weight(1f)
-            )
-            {
+            ) {
                 InfoRow(icon = null, text = data, estilo = appFontBold16)
                 InfoRow(
                     icon = null,
-                    text = "nº máx de voluntários: $numeroMaxVoluntarios",
+                    text = "nº vagas: $numeroMaxVoluntarios",
+                    estilo = MaterialTheme.typography.bodyMedium
+                )
+                InfoRow(
+                    icon = null,
+                    text = "nº disponíveis: $vagasDisponiveis",
                     estilo = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -97,33 +106,9 @@ fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String) {
                     onDismissRequest = { menuExpanded = false },
                     modifier = Modifier.align(Alignment.TopEnd)
                 ) {
-
                     DropdownMenuItem(
-                        text = { Text("novo agregado") },
+                        text = { Text("solicitar presença") },
                         onClick = {
-                            //navController.navigate("addAgregadoFamiliar/$id")
-                            menuExpanded = false
-                        }
-                    )
-
-                    DropdownMenuItem(
-                        text = { Text("nova visita") },
-                        onClick = {
-                            //navController.navigate("addNewItem/$id")
-                            menuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("editar") },
-                        onClick = {
-                            //navController.navigate("editBeneficiario/$id")
-                            menuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text("pedidos") },
-                        onClick = {
-                            //navController.navigate("shareList/$id")
                             menuExpanded = false
                         }
                     )
@@ -137,5 +122,5 @@ fun HorarioFuncionamentoCard(data: String, numeroMaxVoluntarios: String) {
 @Composable
 fun PreviewHorarioFuncionamento(){
     //navController = rememberNavController()
-    HorarioFuncionamentoCard(data = "2025-01-17", numeroMaxVoluntarios = "8")
+    HorarioFuncionamentoCard(data = "2025-01-17", numeroMaxVoluntarios = "8", vagasDisponiveis = "10")
 }

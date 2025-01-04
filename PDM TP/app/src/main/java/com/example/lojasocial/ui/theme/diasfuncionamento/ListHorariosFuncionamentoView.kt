@@ -40,7 +40,8 @@ fun ListHorariosFuncionamentoView(navController: NavController) {
                 ) { _, item ->
                     HorarioFuncionamentoCard(
                         data = item.data,
-                        numeroMaxVoluntarios = item.numeroMaxVoluntarios.toString()
+                        numeroMaxVoluntarios = item.numeroMaxVoluntarios.toString(),
+                        vagasDisponiveis = item.vagasDisponiveis.toString()
                     )
                 }
             }

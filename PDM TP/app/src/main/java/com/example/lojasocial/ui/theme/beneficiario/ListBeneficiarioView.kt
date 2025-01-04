@@ -31,7 +31,7 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
             LazyColumn(contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 itemsIndexed(
-                    items = state.listItems
+                    items = state.list
                 ) { _, item ->
                     BeneficiarioCard(
                         navController = navController,
@@ -62,8 +62,7 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
         }
     }
 
-    // Carregar lista de itens ao iniciar
     LaunchedEffect(key1 = Unit) {
-        viewModel.loadListItems()
+        viewModel.loadListBeneficiario()
     }
 }

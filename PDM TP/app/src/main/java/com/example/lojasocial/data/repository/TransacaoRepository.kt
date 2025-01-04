@@ -2,6 +2,7 @@ package com.example.lojasocial.data.repository
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.example.lojasocial.data.models.Transacao
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -34,7 +35,10 @@ object TransacaoRepository {
             }
     }
 
-    fun getAll(onSuccess: (List<Transacao>) -> Unit) {
+    fun getAll(
+        onSuccess: (List<Transacao>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         db.collection("transacao")
             .addSnapshotListener { value, error ->
                 if (error != null) {
