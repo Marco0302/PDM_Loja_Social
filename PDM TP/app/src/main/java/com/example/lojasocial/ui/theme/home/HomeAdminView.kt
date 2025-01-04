@@ -39,6 +39,12 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
             }
 
             Button(onClick = {
+                navController.navigate("aceitarUser")
+            }) {
+                Text(text = "gerir users")
+            }
+
+            Button(onClick = {
                 navController.navigate("updateHorariosFuncionamento")
             }) {
                 Text(text = "horários de funcionamento")

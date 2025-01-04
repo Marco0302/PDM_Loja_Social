@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.lojasocial.data.repository.AuthRepository
 import com.example.lojasocial.ui.theme.LojaSocialTheme
+import com.example.lojasocial.ui.theme.admin.AceitarUsersScreen
 import com.example.lojasocial.ui.theme.beneficiario.AddAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.AddBeneficiarioView
 import com.example.lojasocial.ui.theme.beneficiario.EditBeneficiarioView
@@ -125,6 +126,11 @@ class MainActivity : ComponentActivity() {
                         composable("updateHorariosFuncionamento"){
                             HorariosFuncionamentoView(navController)
                         }
+                        composable("aceitarUser"){
+                            AceitarUsersScreen(navController)
+                        }
+
+
                     }
                 }
             }
