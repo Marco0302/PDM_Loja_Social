@@ -57,7 +57,6 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Selecionador de tipo de transação
         TransactionTypeSelector(
             selectedType = state.tipo,
             onTypeChange = viewModel::onTypeChange
