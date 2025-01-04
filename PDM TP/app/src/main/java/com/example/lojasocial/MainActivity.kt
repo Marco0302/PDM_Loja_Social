@@ -26,6 +26,7 @@ import com.example.lojasocial.ui.theme.beneficiario.ListAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.ListBeneficiarioView
 import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
+import com.example.lojasocial.ui.theme.home.HorariosFuncionamentoView
 import com.example.lojasocial.ui.theme.login.LoginView
 import com.example.lojasocial.ui.theme.register.RegisterView
 import com.example.lojasocial.ui.theme.transacoes.AddTransactionView
@@ -120,7 +121,10 @@ class MainActivity : ComponentActivity() {
                         }
 
 
-
+                        // Opções Admin
+                        composable("updateHorariosFuncionamento"){
+                            HorariosFuncionamentoView(navController)
+                        }
                     }
                 }
             }
