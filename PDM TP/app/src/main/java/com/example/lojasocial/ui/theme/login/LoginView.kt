@@ -1,5 +1,6 @@
 package com.example.lojasocial.ui.theme.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.ui.theme.LojaSocialTheme
+import com.example.lojasocial.R
 
 @Composable
 fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLoginSuccess: (Any) -> Unit = {}) {
@@ -27,6 +30,14 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+            Image(
+                modifier = Modifier
+                    .width(250.dp)
+                    .height(250.dp),
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = ""
+            )
 
             TextField(value = state.email,
                 onValueChange = viewModel::onEmailChange,
