@@ -39,6 +39,31 @@ object AuthRepository {
             }
     }
 
+    fun getUserRole(
+        onSuccess: (String) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            firestore.collection("user").document(userId).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val role = document.getString("role") ?: "default"
+                        onSuccess(role)
+                    } else {
+                        onFailure("Dados do utilizador não encontrados.")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    onFailure("Erro ao buscar dados: ${e.message}")
+                }
+        } else {
+            onFailure("Usuário não autenticado.")
+        }
+    }
+
+
+
     fun logout(onSuccess: () -> Unit) {
         auth.signOut()
         onSuccess()

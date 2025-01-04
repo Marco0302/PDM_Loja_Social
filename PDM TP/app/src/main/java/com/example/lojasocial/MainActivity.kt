@@ -17,6 +17,7 @@ import androidx.navigation.navArgument
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.lojasocial.data.repository.AuthRepository
 import com.example.lojasocial.ui.theme.LojaSocialTheme
 import com.example.lojasocial.ui.theme.beneficiario.AddAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.AddBeneficiarioView
@@ -24,6 +25,7 @@ import com.example.lojasocial.ui.theme.beneficiario.EditBeneficiarioView
 import com.example.lojasocial.ui.theme.beneficiario.ListAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.ListBeneficiarioView
 import com.example.lojasocial.ui.theme.home.HomeView
+import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
 import com.example.lojasocial.ui.theme.login.LoginView
 import com.example.lojasocial.ui.theme.register.RegisterView
 import com.example.lojasocial.ui.theme.transacoes.AddTransactionView
@@ -48,7 +50,17 @@ class MainActivity : ComponentActivity() {
                     )
                     {
                         composable("login") {
-                            LoginView(navController, onLoginSuccess = { navController.navigate("home") })
+                            LoginView(navController,
+
+                                onLoginSuccess = { role ->
+                                    when (role) {
+                                        "voluntário" -> navController.navigate("homeVoluntario")
+                                        "admin" -> navController.navigate("home")
+                                        "pendente" -> navController.navigate("home")
+                                        else -> navController.navigate("home")
+                                    }
+                                }
+                                )
                         }
                         composable("register"){
                             RegisterView(navController, onRegisterSuccess = { navController.navigate("login") })
@@ -56,6 +68,11 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeView(navController)
                         }
+
+                        composable("homeVoluntario") {
+                            HomeViewVoluntario(navController)
+                        }
+
 
                         //Transacoes
                         composable("lisTransactions"){
@@ -109,14 +126,22 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(Unit) {
-
-                val auth = Firebase.auth
-
-                val currentUser = auth.currentUser
-                if (currentUser != null) {
-                    navController.navigate("home")
-                }
+                AuthRepository.getUserRole(
+                    onSuccess = { role ->
+                        when (role) {
+                            "voluntário" -> navController.navigate("homeVoluntario")
+                            "admin" -> navController.navigate("home")
+                            "pendente" -> navController.navigate("home")
+                            else -> navController.navigate("home") // Default
+                        }
+                    },
+                    onFailure = { errorMessage ->
+                        // Tratar erro, como redirecionar para a tela de login
+                        navController.navigate("login")
+                    }
+                )
             }
+
 
         }
     }
