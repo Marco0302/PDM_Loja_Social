@@ -17,17 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.ui.theme.LojaSocialTheme
 
 @Composable
-fun LoginView(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-    onLoginSuccess: (Any) -> Unit = { role ->
-      when (role) {
-          "voluntário" -> navController.navigate("voluntarioScreen")
-          "admin" -> navController.navigate("adminScreen")
-          "pendente" -> navController.navigate("pendenteScreen")
-          else -> navController.navigate("defaultScreen")
-      }
-    }) {
+fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLoginSuccess: (Any) -> Unit = {}) {
 
     val viewModel : LoginViewModel = viewModel()
     val state by viewModel.state
