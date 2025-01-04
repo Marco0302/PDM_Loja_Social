@@ -30,15 +30,18 @@ class HorariosViewModel : ViewModel() {
         )
     }
 
-    fun addHorario(dataString: String) {
-        // Cria um novo objeto com a data
-        val horario = HorarioFuncionamento(data = dataString)
+    fun addHorario(dataString: String, numeroMaxVoluntarios: Int) {
+        val horario = HorarioFuncionamento(
+            data = dataString,
+            numeroMaxVoluntarios = numeroMaxVoluntarios
+        )
         HorariosRepository.addHorario(
             horario,
             onSuccess = { carregarHorarios() },
             onFailure = { errorMessage = it.message }
         )
     }
+
 
     fun removeHorario(horarioId: String) {
         if (horarioId.isBlank()) return

@@ -59,11 +59,7 @@ fun HorariosFuncionamentoView(
                 )
             }
 
-            // Botão para voltar (opcional)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { navController.popBackStack() }) {
-                Text("Voltar")
-            }
+
         }
     }
 }
@@ -72,29 +68,42 @@ fun HorariosFuncionamentoView(
 fun HorariosCalendarView(viewModel: HorariosViewModel) {
     val horariosList = viewModel.horariosList
 
-    // Vamos criar um Calendar só para pegar o ano/mês inicial
+    // ---------------------
+    // ESTADO DO CALENDÁRIO
+    // ---------------------
+    // Vamos inicializar com o ano e mês atual
     val initCalendar = Calendar.getInstance()
     val initYear = initCalendar.get(Calendar.YEAR)
     val initMonth = initCalendar.get(Calendar.MONTH)
 
-    // Estados que controlam o mês e o ano exibidos
+    // Mês/ano em exibição
     var displayYear by remember { mutableStateOf(initYear) }
     var displayMonth by remember { mutableStateOf(initMonth) }
 
-    // Crie um Calendar local para calcular quantos dias tem o mês e em que dia da semana começa
+    // --------------------------
+    // ESTADO DO DIÁLOGO
+    // --------------------------
+    // Mostra ou não o AlertDialog
+    var showDialog by remember { mutableStateOf(false) }
+    // Guarda a data que vamos salvar quando usuário confirmar no diálogo
+    var dateToAdd by remember { mutableStateOf("") }
+
+    // Cria um Calendar local para calcular as infos do mês
     val calendar = remember { Calendar.getInstance() }
     calendar.set(Calendar.YEAR, displayYear)
     calendar.set(Calendar.MONTH, displayMonth)
     calendar.set(Calendar.DAY_OF_MONTH, 1)
 
-    // Descobrir quantos dias tem neste mês/ano
+    // Número de dias no mês atual
     val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-    // Dia da semana em que começa (1 = domingo, 2 = segunda, etc.)
+    // Dia da semana em que começa (1=domingo, 2=segunda...)
     val startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-    // Calcula offset para alinhar segunda-feira como 0 (ou outra lógica)
+    // Offset para alinhar a segunda-feira como 0 (ajuste como preferir)
     val offset = (startDayOfWeek + 5) % 7
 
-    // Título do calendário: ex: "Calendário de Agosto de 2025"
+    // --------------
+    // TÍTULO + BOTÕES DE NAVEGAÇÃO
+    // --------------
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -102,7 +111,6 @@ fun HorariosCalendarView(viewModel: HorariosViewModel) {
     ) {
         // Botão "Mês anterior"
         IconButton(onClick = {
-            // Decrementa o mês
             if (displayMonth == 0) {
                 displayMonth = 11
                 displayYear -= 1
@@ -124,7 +132,6 @@ fun HorariosCalendarView(viewModel: HorariosViewModel) {
 
         // Botão "Próximo mês"
         IconButton(onClick = {
-            // Incrementa o mês
             if (displayMonth == 11) {
                 displayMonth = 0
                 displayYear += 1
@@ -139,18 +146,24 @@ fun HorariosCalendarView(viewModel: HorariosViewModel) {
     // Cabeçalho dos dias da semana
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
         listOf("Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom").forEach { diaSemana ->
-            Text(text = diaSemana, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+            Text(
+                text = diaSemana,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center
+            )
         }
     }
 
-    // totalSlots = dias "vazios" + dias do mês
+    // Total de "slots" = offset + daysInMonth
     val totalSlots = offset + daysInMonth
-    // rowCount = quantas linhas (semanas) precisamos
+    // Quantas linhas (semanas) precisamos
     val rowCount = (totalSlots / 7) + if (totalSlots % 7 != 0) 1 else 0
 
     var dayCounter = 1
 
-    // Constrói as linhas (semanas)
+    // --------------
+    // MONTANDO O GRID DE DIAS
+    // --------------
     for (week in 1..rowCount) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -158,45 +171,49 @@ fun HorariosCalendarView(viewModel: HorariosViewModel) {
         ) {
             for (dayOfWeek in 0..6) {
                 val slotIndex = (week - 1) * 7 + dayOfWeek
+
+                // Se ainda não chegamos ao primeiro dia ou passamos do último dia
                 if (slotIndex < offset || slotIndex >= offset + daysInMonth) {
-                    // Espaço vazio
-                    Box(modifier = Modifier.weight(1f)) { /* Dia fora do mês atual */ }
+                    // Espaço vazio no calendário
+                    Box(modifier = Modifier.weight(1f)) {}
                 } else {
-                    // Esse dia existe dentro do mês
+                    // Dia efetivo (1..daysInMonth)
                     val day = dayCounter
-                    // Montamos um Calendar para esta data
+
+                    // Monta um Calendar para esse dia
                     val cal = Calendar.getInstance().apply {
                         set(Calendar.YEAR, displayYear)
                         set(Calendar.MONTH, displayMonth)
                         set(Calendar.DAY_OF_MONTH, day)
                     }
-                    val dateString = calendarToString(cal)
+                    val dateString = calendarToString(cal) // "yyyy-MM-dd"
 
-                    // Ver se a data existe no Firestore
+                    // Ver se essa data já está cadastrada no Firestore
                     val horarioObj = isDateInList(dateString, horariosList)
 
-                    // Mostra um box clicável
+                    // Box clicável
                     Box(
                         modifier = Modifier
                             .weight(1f)
                             .padding(4.dp)
-                            .aspectRatio(1f) // quadrado
+                            .aspectRatio(1f) // mantemos quadrado
                             .clickable {
                                 if (horarioObj == null) {
-                                    // ainda não existe => adicionar
-                                    viewModel.addHorario(dateString)
+                                    // Dia vazio => mostra diálogo para digitar nº voluntários
+                                    dateToAdd = dateString
+                                    showDialog = true
                                 } else {
-                                    // já existe => remover
+                                    // Já existe => remover
                                     val idToRemove = horarioObj.id ?: ""
                                     viewModel.removeHorario(idToRemove)
                                 }
                             },
                         contentAlignment = Alignment.Center
                     ) {
-                        // Se existe, pintamos outra cor
+                        // Se existe, pintamos diferente
                         if (horarioObj != null) {
                             Text(
-                                text = "$day\n(Ativo)",
+                                text = "$day\n(Ativo: ${horarioObj.numeroMaxVoluntarios})",
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
@@ -217,6 +234,19 @@ fun HorariosCalendarView(viewModel: HorariosViewModel) {
                 }
             }
         }
+    }
+
+    // Se showDialog == true, exibimos o AlertDialog
+    if (showDialog) {
+        DigitarVoluntariosDialog(
+            onDismiss = { showDialog = false },
+            onConfirm = { numero ->
+                // Quando o usuário confirmar, chamamos o ViewModel
+                viewModel.addHorario(dateToAdd, numero)
+                // Fechamos o diálogo
+                showDialog = false
+            }
+        )
     }
 }
 
@@ -247,4 +277,43 @@ fun HorariosViewPreview() {
     LojaSocialTheme {
         HorariosFuncionamentoView(navController = rememberNavController())
     }
+}
+
+
+// --------------------------------------------------------------------
+// DIALOG COM TEXTFIELD PARA DIGITAR O NÚMERO DE VOLUNTÁRIOS
+// --------------------------------------------------------------------
+@Composable
+fun DigitarVoluntariosDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (Int) -> Unit
+) {
+    var inputText by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        confirmButton = {
+            TextButton(onClick = {
+                // Converte o input em Int (ou 0 se inválido)
+                val numero = inputText.toIntOrNull() ?: 0
+                onConfirm(numero)
+            }) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text("Cancelar")
+            }
+        },
+        title = { Text("Digite o número máximo de voluntários") },
+        text = {
+            OutlinedTextField(
+                value = inputText,
+                onValueChange = { inputText = it },
+                label = { Text("Nº Máximo") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+        }
+    )
 }
