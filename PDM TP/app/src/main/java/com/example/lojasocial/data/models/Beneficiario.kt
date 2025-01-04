@@ -5,7 +5,6 @@ data class Beneficiario(
     var nome: String,
     var telefone: String,
     val nacionalidade: String,
-    var agregadoFamiliar: String,
     var numeroVisita: Long,
     val criadoPor: String
 )
@@ -17,7 +16,6 @@ data class Beneficiario(
                 map["nome"] as String,
                 map["telefone"] as String,
                 map["nacionalidade"] as String,
-                map["agregadoFamiliar"] as String,
                 map["numeroVisita"] as Long,
                 map["criadoPor"] as String,
             )

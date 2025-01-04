@@ -18,7 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.lojasocial.ui.theme.LojaSocialTheme
+import com.example.lojasocial.ui.theme.beneficiario.AddAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.AddBeneficiarioView
+import com.example.lojasocial.ui.theme.beneficiario.EditBeneficiarioView
+import com.example.lojasocial.ui.theme.beneficiario.ListAgregadoFamiliarView
+import com.example.lojasocial.ui.theme.beneficiario.ListBeneficiarioView
 import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.login.LoginView
 import com.example.lojasocial.ui.theme.register.RegisterView
@@ -58,9 +62,44 @@ class MainActivity : ComponentActivity() {
                         composable("addTransacao"){
                             AddTransactionView(navController)
                         }
+
+
+                        //Beneficiarios
+                        composable("listBeneficiario"){
+                            ListBeneficiarioView(navController)
+                        }
+
                         composable("addBeneficiario"){
                             AddBeneficiarioView(navController)
                         }
+
+                        composable(
+                            route = "listAgregadoFamiliar/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            ListAgregadoFamiliarView(navController, id)
+                        }
+
+                        composable(
+                            route = "addAgregadoFamiliar/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            AddAgregadoFamiliarView(navController, id)
+                        }
+
+                        composable(
+                            route = "editBeneficiario/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            EditBeneficiarioView(navController, id)
+                        }
+
 
 
                     }

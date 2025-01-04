@@ -4,11 +4,11 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,23 +26,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.lojasocial.ui.theme.bars.TopBar
+import com.example.lojasocial.data.models.Beneficiario
 
 @Composable
-fun AddBeneficiarioView(navController: NavController = rememberNavController()) {
-    val viewModel: AddBeneficiarioViewModel = viewModel()
+fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String) {
+    val viewModel: AddAgregadoFamiliarViewModel = viewModel()
     val state by viewModel.state
-
-    TopBar(title = "Adicionar Beneficiário", navController = navController)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = state.nome,
@@ -53,60 +51,59 @@ fun AddBeneficiarioView(navController: NavController = rememberNavController()) 
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.fillMaxWidth(0.8f)
+                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = state.telefone,
-            onValueChange = viewModel::onTelefoneChange,
-            label = { Text("telefone") },
-            leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = "") },
+            value = state.parentesco,
+            onValueChange = viewModel::onParentescoChange,
+            label = { Text("parantesco") },
+            leadingIcon = { Icon(Icons.Filled.AccountCircle, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.fillMaxWidth(0.8f)
+                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
         )
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
-            value = state.nacionalidade,
-            onValueChange = viewModel::onNacionalidadeChange,
-            label = { Text("nacionalidade") },
-            leadingIcon = { Icon(Icons.Filled.Place, contentDescription = "") },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(12.dp),
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                viewModel.add(onSuccess = { navController.popBackStack() })
+                if (state.nome.isNotEmpty() && state.parentesco.isNotEmpty())
+                {
+                    val success = viewModel.create(beneficiarioId)
+                    if(success)
+                        navController.popBackStack()
+                }
+                else
+                {
+                    state.errorMessage = "preencha todos os campos."
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
             enabled = !state.isLoading
         )
         {
-            Text(if (state.isLoading) "a carregar..." else "adicionar")
+            Text(if (state.isLoading) "carregando..." else "adicionar agregado familiar")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        state.errorMessage?.let {
-            Text(text = it, color = MaterialTheme.colorScheme.error)
+        if (state.errorMessage != null) {
+            Text(
+                text = state.errorMessage ?: "",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
         }
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewRegisterView(){
-    AddBeneficiarioView(navController = rememberNavController())
 }

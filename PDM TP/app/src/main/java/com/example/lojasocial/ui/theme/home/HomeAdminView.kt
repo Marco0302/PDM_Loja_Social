@@ -27,10 +27,9 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
             horizontalAlignment = Alignment.CenterHorizontally)
         {
             Button(onClick = {
-                //navController.navigate("addList")
-                navController.navigate("addBeneficiario")
+                navController.navigate("listBeneficiario")
             }) {
-                Text(text = "todos utilizadores")
+                Text(text = "beneficiários")
             }
 
             Button(onClick = {

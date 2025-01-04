@@ -2,9 +2,11 @@ package com.example.lojasocial.ui.theme.beneficiario
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.lojasocial.data.models.Beneficiario
 import com.example.lojasocial.data.repository.BeneficiarioRepository
 
-data class AddBeneficiarioState(
+data class EditListState(
     var nome: String = "",
     var telefone: String = "",
     var nacionalidade: String = "",
@@ -12,8 +14,9 @@ data class AddBeneficiarioState(
     var errorMessage: String? = null
 )
 
-class AddBeneficiarioViewModel : ViewModel() {
-    var state = mutableStateOf(AddBeneficiarioState())
+class EditBeneficiarioViewModel : ViewModel() {
+    var state = mutableStateOf(EditListState())
+        private set
 
     private val nome
         get() = state.value.nome
@@ -22,33 +25,38 @@ class AddBeneficiarioViewModel : ViewModel() {
     private val nacionalidade
         get() = state.value.nacionalidade
 
+
     fun onNomeChange(newValue: String) {
         state.value = state.value.copy(nome = newValue)
+        state.value = state.value.copy(errorMessage = null)
     }
 
     fun onTelefoneChange(newValue: String) {
         state.value = state.value.copy(telefone = newValue)
+        state.value = state.value.copy(errorMessage = null)
     }
 
     fun onNacionalidadeChange(newValue: String) {
         state.value = state.value.copy(nacionalidade = newValue)
+        state.value = state.value.copy(errorMessage = null)
     }
 
     private fun onErrorMessage(error: String){
         state.value = state.value.copy(errorMessage = error)
     }
 
-    fun add(onSuccess: () -> Unit)
-    {
-        if(nome.isEmpty() || nacionalidade.isEmpty())
+    fun editList(id: String): Boolean {
+        if(nome.isEmpty() || telefone.isEmpty())
         {
             onErrorMessage("Deve preencher os campos corretamente...")
+            return false;
         }
         else
         {
-            BeneficiarioRepository.createBeneficiario(nome, telefone, nacionalidade,
-                onSuccess = onSuccess, onFailure = { }
-            )
+            BeneficiarioRepository.updateBeneficiario(id, nome, telefone, "Portuguesa", "",
+                onSuccess = { /*navController.navigate("home")*/ },
+                onFailure = { /*message -> state.errorMessage = message*/ })
+            return true;
         }
     }
 

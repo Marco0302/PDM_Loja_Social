@@ -7,14 +7,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 object BeneficiarioRepository {
-    private val db by lazy { FirebaseFirestore.getInstance() }
+    val db by lazy { FirebaseFirestore.getInstance() }
     private val auth = FirebaseAuth.getInstance()
 
     fun createBeneficiario(
         nome: String,
         telefone: String,
         nacionalidade: String,
-        agregadoFamiliar: String,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
@@ -28,8 +27,7 @@ object BeneficiarioRepository {
 
                         val beneficiario = Beneficiario(
                             id = "", nome = nome, telefone = telefone,
-                            nacionalidade = nacionalidade, agregadoFamiliar = agregadoFamiliar,
-                            numeroVisita = 0, criadoPor = userName
+                            nacionalidade = nacionalidade, numeroVisita = 0, criadoPor = userName
                         )
 
                         db.collection("beneficiario")
