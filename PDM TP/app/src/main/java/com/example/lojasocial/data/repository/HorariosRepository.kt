@@ -1,17 +1,20 @@
 package com.example.lojasocial.data.repository
 
+import com.example.lojasocial.data.models.AgregadoFamiliar
+import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalDateTime
 
 object HorariosRepository {
-    val firestore by lazy { FirebaseFirestore.getInstance() }
+    val db by lazy { FirebaseFirestore.getInstance() }
 
     fun addHorario(
         horario: HorarioFuncionamento,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val docRef = firestore.collection("horariosFuncionamento").document()
+        val docRef = db.collection("horariosFuncionamento").document()
         val horarioComId = horario.copy(id = docRef.id)
         docRef.set(horarioComId)
             .addOnSuccessListener { onSuccess() }
@@ -23,7 +26,7 @@ object HorariosRepository {
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        firestore.collection("horariosFuncionamento").document(horarioId)
+        db.collection("horariosFuncionamento").document(horarioId)
             .delete()
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
@@ -33,7 +36,7 @@ object HorariosRepository {
         onSuccess: (List<HorarioFuncionamento>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        firestore.collection("horariosFuncionamento")
+        db.collection("horariosFuncionamento")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val lista = querySnapshot.toObjects(HorarioFuncionamento::class.java)
@@ -41,4 +44,21 @@ object HorariosRepository {
             }
             .addOnFailureListener { onFailure(it) }
     }
-}
+
+    fun addSolicitacaoPresenca(
+        diaFuncionamentoID: String
+    ) {
+
+        val solicitacao = CandidaturaHorarioFuncionamento(id = "", nome = "Marco Oliveira", estado = "Pendente", data = LocalDateTime.now().toString() )
+
+        db.collection("horariosFuncionamento")
+            .document(diaFuncionamentoID)
+            .collection("solicitacoesPresenca")
+            .add(solicitacao)
+            .addOnSuccessListener {
+                //onSuccess()
+            }
+            .addOnFailureListener { //onFailure(it)
+            }
+        }
+    }

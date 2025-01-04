@@ -1,4 +1,4 @@
-package com.example.lojasocial.ui.theme.diasfuncionamento
+package com.example.lojasocial.ui.theme.admin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,11 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.lojasocial.ui.theme.bars.TopBar
+import com.example.lojasocial.ui.theme.usercontrol.FuncionamentoCard
 import com.example.lojasocial.ui.theme.usercontrol.HorarioFuncionamentoCard
 
 @Composable
-fun ListHorariosFuncionamentoView(navController: NavController) {
-    val viewModel: ListHorarioFuncionamentoViewModel = viewModel()
+fun ListFuncionamentoView(navController: NavController) {
+    val viewModel: ListFuncionamentoViewModel = viewModel()
     val state by viewModel.state
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -42,37 +42,36 @@ fun ListHorariosFuncionamentoView(navController: NavController) {
                 itemsIndexed(
                     items = state.list
                 ) { _, item ->
-                    HorarioFuncionamentoCard(
+                    FuncionamentoCard(
                         id = item.id?: "",
                         data = item.data,
                         numeroMaxVoluntarios = item.numeroMaxVoluntarios.toString(),
-                        vagasDisponiveis = item.vagasDisponiveis.toString()
+                        vagasDisponiveis = item.vagasDisponiveis.toString(),
+                        onClick = {
+                            navController.navigate("listSolicitacaoPresenca/${item.id}")
+                        }
                     )
                 }
             }
         }
+
+        FloatingActionButton(
+            onClick = { navController.navigate("addHorariosFuncionamento") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            containerColor = Color.DarkGray
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "Adicionar Horário Funcionamento",
+                tint = Color.White
+            )
+        }
+
     }
 
     LaunchedEffect (key1 = Unit){
-        viewModel.loadListHorariosFuncionamento()
+        viewModel.loadListFuncionamento()
     }
-}
-
-@Composable
-fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text(text = "Confirmação") },
-        text = { Text("Tem a certeza que pretende solicitar presença neste dia de funcionamento?") },
-        confirmButton = {
-            TextButton(onClick = { onDismiss() }) {
-                Text("Sim", color = Color.Red)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onDismiss() }) {
-                Text("Não")
-            }
-        }
-    )
 }

@@ -24,7 +24,7 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
     val state by viewModel.state
 
     Box(modifier = modifier.fillMaxSize()) {
-        // Coloca a lista de beneficiários dentro da Box
+
         Column {
             TopBar(title = "Lista de Beneficiários", navController = navController)
 
@@ -46,11 +46,10 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
             }
         }
 
-        // Botão flutuante dentro do Box (fora do Column), agora o align vai funcionar corretamente
         FloatingActionButton(
             onClick = { navController.navigate("addBeneficiario") },
             modifier = Modifier
-                .align(Alignment.BottomEnd) // Alinha o botão no canto inferior direito
+                .align(Alignment.BottomEnd)
                 .padding(16.dp),
             containerColor = Color.DarkGray
         ) {

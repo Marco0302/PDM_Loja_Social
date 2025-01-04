@@ -1,4 +1,4 @@
-package com.example.lojasocial.ui.theme.transacoes
+package com.example.lojasocial.ui.theme.diasfuncionamento
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

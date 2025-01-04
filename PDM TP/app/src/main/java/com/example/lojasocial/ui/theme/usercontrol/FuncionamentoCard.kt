@@ -35,12 +35,9 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun HorarioFuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: String, vagasDisponiveis: String) {
-    var menuExpanded by remember { mutableStateOf(false) }
-    var showDialog by remember { mutableStateOf(false) } // Estado para exibir o diálogo de confirmação
-
+fun FuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: String, vagasDisponiveis: String, onClick: () -> Unit) {
     val vagas = vagasDisponiveis.toIntOrNull() ?: 0
-    val cardColor = if (vagas == 0) Color(0xFFFFEBEE) else Color(0xFFE8F5E9) // Vermelho claro ou verde claro
+    val cardColor = if (vagas == 0) Color(0xFFFFEBEE) else Color(0xFFE8F5E9)
 
     Card(
         modifier = Modifier
@@ -48,7 +45,7 @@ fun HorarioFuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: Stri
             .padding(horizontal = 8.dp, vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = cardColor) // Cor do Card
+        colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Row(
             modifier = Modifier
@@ -56,7 +53,6 @@ fun HorarioFuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: Stri
                 .background(cardColor),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Ícone circular
             Box(
                 modifier = Modifier
                     .size(50.dp)
@@ -65,7 +61,7 @@ fun HorarioFuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: Stri
             ) {
                 Icon(
                     imageVector = Icons.Default.DateRange,
-                    contentDescription = "List Icon",
+                    contentDescription = "",
                     tint = Color(0xFF757575),
                     modifier = Modifier.size(30.dp)
                 )
@@ -91,66 +87,6 @@ fun HorarioFuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: Stri
             }
 
             Spacer(modifier = Modifier.width(16.dp))
-
-            // Menu com opções
-            Box(contentAlignment = Alignment.TopEnd) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "More options",
-                    modifier = Modifier
-                        .clickable { menuExpanded = true }
-                        .padding(8.dp)
-                )
-                DropdownMenu(
-                    expanded = menuExpanded,
-                    onDismissRequest = { menuExpanded = false }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text("Solicitar Presença") },
-                        onClick = {
-                            showDialog = true // Mostra o diálogo de confirmação
-                            menuExpanded = false
-                        }
-                    )
-                }
-            }
         }
     }
-
-    // Diálogo de confirmação
-    if (showDialog) {
-        ConfirmationDialog(id,
-            onConfirm = {
-                // Lógica para confirmar presença (coloque sua lógica aqui)
-                showDialog = false
-            },
-            onDismiss = { showDialog = false }
-        )
-    }
-}
-
-@Composable
-fun ConfirmationDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text(text = "Confirmação") },
-        text = { Text("Tem a certeza que pretende solicitar presença neste dia de funcionamento?") },
-        confirmButton = {
-            TextButton(onClick = { onConfirm() }) {
-                HorariosRepository.addSolicitacaoPresenca(id)
-                Text("Sim", color = Color.Red)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onDismiss() }) { // Fecha o diálogo
-                Text("Não")
-            }
-        }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHorarioFuncionamento() {
-    HorarioFuncionamentoCard("0", data = "2025-01-17", numeroMaxVoluntarios = "8", vagasDisponiveis = "10")
 }

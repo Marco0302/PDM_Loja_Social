@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.lojasocial.data.repository.AuthRepository
 import com.example.lojasocial.ui.theme.LojaSocialTheme
 import com.example.lojasocial.ui.theme.admin.AceitarUsersScreen
+import com.example.lojasocial.ui.theme.admin.ListFuncionamentoView
+import com.example.lojasocial.ui.theme.admin.ListSolicitacaoPresencaView
 import com.example.lojasocial.ui.theme.beneficiario.AddAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.AddBeneficiarioView
 import com.example.lojasocial.ui.theme.beneficiario.EditBeneficiarioView
@@ -123,17 +125,33 @@ class MainActivity : ComponentActivity() {
                         }
 
 
-                        // Opções Admin
-                        composable("updateHorariosFuncionamento"){
-                            HorariosFuncionamentoView(navController)
-                        }
-                        composable("aceitarUser"){
-                            AceitarUsersScreen(navController)
-                        }
 
                         //Horarios Funcionamento
+                        //voluntario
                         composable("listHorarioFuncionamento"){
                             ListHorariosFuncionamentoView(navController)
+                        }
+
+                        //admin
+                        composable("listFuncionamento"){
+                            ListFuncionamentoView(navController)
+                        }
+
+                        composable(
+                            route = "listSolicitacaoPresenca/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            ListSolicitacaoPresencaView(navController, id)
+                        }
+
+                        composable("addHorariosFuncionamento"){
+                            HorariosFuncionamentoView(navController)
+                        }
+
+                        composable("aceitarUser"){
+                            AceitarUsersScreen(navController)
                         }
 
                     }

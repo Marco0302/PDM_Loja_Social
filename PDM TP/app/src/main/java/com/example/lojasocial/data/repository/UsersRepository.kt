@@ -5,16 +5,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 object UsersRepository {
-    private val firestore by lazy { FirebaseFirestore.getInstance() }
+    private val db by lazy { FirebaseFirestore.getInstance() }
 
-    /**
-     * Busca todos os usuários com estado = "pendente"
-     */
     fun getUsersPendentes(
         onSuccess: (List<User>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        firestore.collection("user")
+        db.collection("user")
             .whereEqualTo("estado", "pendente")
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -26,15 +23,12 @@ object UsersRepository {
             }
     }
 
-    /**
-     * Aceita o usuário, atualizando estado para "aceite"
-     */
     fun aceitarUser(
         userId: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        firestore.collection("user")
+        db.collection("user")
             .document(userId)
             .update("estado", "aceite")
             .addOnSuccessListener {
@@ -45,15 +39,12 @@ object UsersRepository {
             }
     }
 
-    /**
-     * Recusa o usuário, removendo do Firestore
-     */
     fun recusarUser(
         userId: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        firestore.collection("user")
+        db.collection("user")
             .document(userId)
             .delete()
             .addOnSuccessListener {
