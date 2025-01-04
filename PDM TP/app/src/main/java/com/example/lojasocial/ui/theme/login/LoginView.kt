@@ -33,8 +33,8 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
 
             Image(
                 modifier = Modifier
-                    .width(250.dp)
-                    .height(250.dp),
+                    .width(300.dp)
+                    .height(300.dp),
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = ""
             )
