@@ -2,11 +2,11 @@ package com.example.lojasocial.ui.theme.transacoes
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.lojasocial.data.models.Transaction
-import com.example.lojasocial.data.repository.TransactionRepository
+import com.example.lojasocial.data.models.Transacao
+import com.example.lojasocial.data.repository.TransacaoRepository
 
 data class ListTransactionState(
-    val listTransaction: List<Transaction> = emptyList(),
+    val listTransaction: List<Transacao> = emptyList(),
     var description: String = "",
     var amount: String = "",
     var type: String = "",
@@ -20,7 +20,7 @@ class ListTransactionViewModel : ViewModel() {
         private set
 
     fun loadListTransaction() {
-        TransactionRepository.getAll { listTransaction ->
+        TransacaoRepository.getAll { listTransaction ->
             state.value = state.value.copy(
                 listTransaction = listTransaction
             )

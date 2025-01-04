@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.ui.theme.bars.TopBar
+import com.example.lojasocial.ui.theme.usercontrol.TransactionTypeSelector
 
 @Composable
 fun AddTransactionView(navController: NavController = rememberNavController()) {
@@ -31,7 +32,7 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
         Spacer(modifier = Modifier.height(80.dp))
 
         TextField(
-            value = state.description,
+            value = state.descricao,
             onValueChange = viewModel::onDescriptionChange,
             label = { Text("descrição") },
             colors = TextFieldDefaults.colors(
@@ -44,7 +45,7 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = state.amount,
+            value = state.valor,
             onValueChange = viewModel::onAmountChange,
             label = { Text("valor") },
             colors = TextFieldDefaults.colors(
@@ -56,30 +57,17 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
-            value = state.type,
-            onValueChange = viewModel::onTypeChange,
-            label = { Text("entrada / saída") },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(12.dp),
+        // Selecionador de tipo de transação
+        TransactionTypeSelector(
+            selectedType = state.tipo,
+            onTypeChange = viewModel::onTypeChange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                val success = viewModel.addTransaction(state.description, state.amount.toDouble(), state.type,
-                    onSuccess = {
-                    navController.popBackStack()
-                    },
-                    onFailure = { errorMessage ->
-                        state.errorMessage = errorMessage
-                    })
-                if(success)
-                    navController.popBackStack()
+               viewModel.add(onSuccess = { navController.popBackStack() })
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
             enabled = !state.isLoading

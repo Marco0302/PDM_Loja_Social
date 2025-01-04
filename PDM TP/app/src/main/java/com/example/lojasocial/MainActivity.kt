@@ -56,6 +56,8 @@ class MainActivity : ComponentActivity() {
                         composable("home") {
                             HomeView(navController)
                         }
+
+                        //Transacoes
                         composable("lisTransactions"){
                             ListTransactionView(navController)
                         }
