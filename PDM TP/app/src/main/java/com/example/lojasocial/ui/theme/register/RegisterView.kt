@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
@@ -38,6 +40,16 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "Preencha os dados",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 28.sp
+            ),
+            textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 35.dp)
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
@@ -140,6 +152,44 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // -------------------------------------------------------
+        // Secção para escolher o role (RadioButtons)
+        // -------------------------------------------------------
+        val roles = listOf("admin", "membro da junta", "voluntário")
+
+        Text(
+            text = "Tipo de utilizador:",
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 35.dp)
+        )
+
+        Column(
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 35.dp)
+        ){
+
+            roles.forEach { roleOption ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    RadioButton(
+                        selected = (roleOption == state.role),
+                        onClick = {
+                            viewModel.onRoleChange(roleOption)
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = roleOption)
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        // -------------------------------------------------------
+
         Button(
             onClick = {
                 viewModel.register(onRegisterSuccess = onRegisterSuccess, onRegisterFailure = { message ->
@@ -189,6 +239,11 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegisterView(){
-    RegisterView(navController = rememberNavController(), onRegisterSuccess = {})
+fun PreviewRegisterView() {
+    MaterialTheme {
+        RegisterView(
+            navController = rememberNavController(),
+            onRegisterSuccess = {}
+        )
+    }
 }

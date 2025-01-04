@@ -13,8 +13,10 @@ data class RegisterState(
     val password: String = "",
     val confirmPassword: String = "",
     val isLoading: Boolean = false,
-    var errorMessage: String? = null
+    var errorMessage: String? = null,
+    val role: String = ""
 )
+
 
 class RegisterViewModel : ViewModel() {
     var state = mutableStateOf(RegisterState())
@@ -42,6 +44,10 @@ class RegisterViewModel : ViewModel() {
         state.value = state.value.copy(confirmPassword = newValue)
     }
 
+    fun onRoleChange(newRole: String) {
+        state.value = state.value.copy(role = newRole)
+    }
+
     fun register(onRegisterSuccess: () -> Unit, onRegisterFailure: (String) -> Unit) {
         state.value = state.value.copy(isLoading = true)
 
@@ -62,7 +68,7 @@ class RegisterViewModel : ViewModel() {
                         "telefone" to state.value.telefone,
                         "email" to state.value.email,
                         "estado" to "pendente",
-                        "role" to ""
+                        "role" to state.value.role
                     )
 
                     firestore.collection("user").document(userId ?: "")

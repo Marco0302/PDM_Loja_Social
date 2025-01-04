@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.example.lojasocial.data.repository.AuthRepository
 
 data class LoginState(
     val email: String = "",
@@ -34,27 +35,27 @@ class LoginViewModel : ViewModel() {
         state.value = state.value.copy(errorMessage = error)
     }
 
-    fun login(onLoginSuccess: () -> Unit) {
-        val auth = FirebaseAuth.getInstance()
-        state.value = state.value.copy(isLoading = true)
-
+    fun login(onLoginSuccess: (String) -> Unit) {
+        state.value = state.value.copy(isLoading = true, errorMessage = null)
 
         if (email.isEmpty() || password.isEmpty()) {
-            onErrorMessage("Deve preencher os campos corretamente...");
+            onErrorMessage("Deve preencher os campos corretamente...")
+            state.value = state.value.copy(isLoading = false)
             return
         }
 
-        auth.signInWithEmailAndPassword(state.value.email, state.value.password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    onLoginSuccess()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                }
+        AuthRepository.login(
+            email = email,
+            password = password,
+            onSuccess = { role ->
+                state.value = state.value.copy(isLoading = false)
+                onLoginSuccess(role)
+            },
+            onFailure = { error ->
+                state.value = state.value.copy(isLoading = false)
+                onErrorMessage(error)
             }
+        )
     }
 
     fun logout(onLogoutSuccess: () -> Unit) {
