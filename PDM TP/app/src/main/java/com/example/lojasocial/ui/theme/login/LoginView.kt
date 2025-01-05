@@ -4,6 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,6 +45,7 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
             TextField(value = state.email,
                 onValueChange = viewModel::onEmailChange,
                 label = { Text("email") },
+                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "") },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
@@ -53,7 +57,8 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
 
             TextField(value = state.password,
                 onValueChange = viewModel::onPasswordChange,
-                label = { Text(text = "password") },
+                label = { Text(text = "palavra-passe") },
+                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "") },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
@@ -70,6 +75,12 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Button(onClick = { navController.navigate("register") },)  { Text(text = "Registar") }
+            }
+
+            TextButton(onClick = {
+                navController.navigate("recuperarPalavraPasse")
+            }) {
+                Text("Não sabes a tua palavra-passe?")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
