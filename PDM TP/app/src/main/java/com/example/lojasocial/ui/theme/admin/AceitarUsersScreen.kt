@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.data.models.User
+import com.example.lojasocial.ui.theme.bars.TopBar
 import com.example.lojasocial.ui.viewmodels.AceitarUsersViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,8 +31,7 @@ fun AceitarUsersScreen(
 
     Scaffold(
         topBar = {
-            // Se quiser um top bar
-            // TopAppBar(title = { Text("Aceitar Usuários Pendentes") })
+            TopBar(title = "Aceitar Utilizadores Pendentes", navController = navController)
         }
     ) { innerPadding ->
         Column(
