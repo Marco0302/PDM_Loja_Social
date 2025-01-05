@@ -87,7 +87,7 @@ fun UserItem(
         Text(text = "Nome: ${user.nome}")
         Text(text = "Email: ${user.email}")
         Text(text = "Telefone: ${user.telefone}")
-        Text(text = "Estado: ${user.role}")
+        Text(text = "Tipo: ${user.role}")
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
