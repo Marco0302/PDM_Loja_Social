@@ -1,7 +1,7 @@
 package com.example.lojasocial.data.models
 
 data class AgregadoFamiliar(
-    var id: String = "",
+    val id: String = "",
     var nome: String = "",
     var parentesco: String = ""
 )

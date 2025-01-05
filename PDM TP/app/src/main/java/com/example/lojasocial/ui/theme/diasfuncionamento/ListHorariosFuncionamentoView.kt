@@ -43,10 +43,13 @@ fun ListHorariosFuncionamentoView(navController: NavController) {
                     items = state.list
                 ) { _, item ->
                     HorarioFuncionamentoCard(
-                        id = item.id?: "",
+                        id = item.id ?: "",
                         data = item.data,
                         numeroMaxVoluntarios = item.numeroMaxVoluntarios.toString(),
-                        vagasDisponiveis = item.vagasDisponiveis.toString()
+                        vagasDisponiveis = item.vagasDisponiveis.toString(),
+                        onClick = {
+                            navController.navigate("listPessoaisSolicitacaoPresenca/${item.id}")
+                        }
                     )
                 }
             }
@@ -56,23 +59,4 @@ fun ListHorariosFuncionamentoView(navController: NavController) {
     LaunchedEffect (key1 = Unit){
         viewModel.loadListHorariosFuncionamento()
     }
-}
-
-@Composable
-fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text(text = "Confirmação") },
-        text = { Text("Tem a certeza que pretende solicitar presença neste dia de funcionamento?") },
-        confirmButton = {
-            TextButton(onClick = { onDismiss() }) {
-                Text("Sim", color = Color.Red)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { onDismiss() }) {
-                Text("Não")
-            }
-        }
-    )
 }

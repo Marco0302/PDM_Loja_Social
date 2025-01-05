@@ -35,7 +35,7 @@ fun HorariosFuncionamentoView(
 ) {
     val errorMessage = viewModel.errorMessage
 
-    TopBar(title = "Marcar Horário de Funcionamento", navController = navController)
+    TopBar(title = "Novo Horário", navController = navController)
 
 
     Box(modifier = modifier.fillMaxSize()) {

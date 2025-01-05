@@ -28,6 +28,7 @@ import com.example.lojasocial.ui.theme.beneficiario.EditBeneficiarioView
 import com.example.lojasocial.ui.theme.beneficiario.ListAgregadoFamiliarView
 import com.example.lojasocial.ui.theme.beneficiario.ListBeneficiarioView
 import com.example.lojasocial.ui.theme.diasfuncionamento.ListHorariosFuncionamentoView
+import com.example.lojasocial.ui.theme.diasfuncionamento.ListPessoaisSolicitacoesPresencaView
 import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
 import com.example.lojasocial.ui.theme.home.HorariosFuncionamentoView
@@ -145,6 +146,16 @@ class MainActivity : ComponentActivity() {
                             val id = backStackEntry.arguments?.getString("id") ?: ""
                             ListSolicitacaoPresencaView(navController, id)
                         }
+
+                        composable(
+                            route = "listPessoaisSolicitacaoPresenca/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            ListPessoaisSolicitacoesPresencaView(navController, id)
+                        }
+
 
                         composable("addHorariosFuncionamento"){
                             HorariosFuncionamentoView(navController)

@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.example.lojasocial.data.models.Transacao
+import com.example.lojasocial.data.repository.HorariosRepository.db
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -11,7 +12,13 @@ object TransacaoRepository {
     private val db by lazy { FirebaseFirestore.getInstance() }
     private val transactionsCollection = db.collection("transacao")
 
-    fun addTransaction(descricao:String, valor:Double, tipo:String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+    fun addTransaction(
+        descricao: String,
+        valor: Double,
+        tipo: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
 
         val transacao = Transacao("", descricao, valor, tipo)
 
@@ -35,7 +42,7 @@ object TransacaoRepository {
             }
     }
 
-    fun getAll(
+    /*fun getAll(
         onSuccess: (List<Transacao>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -62,4 +69,20 @@ object TransacaoRepository {
                 onSuccess(listTransaction)
             }
         }
+    }*/
+
+    fun getAll(
+        onSuccess: (List<Transacao>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("transacao")
+            .addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    onFailure(error)
+                } else {
+                    val lista = querySnapshot?.toObjects(Transacao::class.java).orEmpty()
+                    onSuccess(lista)
+                }
+            }
     }
+}

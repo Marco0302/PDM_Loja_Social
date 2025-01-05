@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.example.lojasocial.data.repository.HorariosRepository
@@ -35,13 +36,14 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun FuncionamentoCard(id:String, data: String, numeroMaxVoluntarios: String, vagasDisponiveis: String, onClick: () -> Unit) {
+fun FuncionamentoCard(navController: NavController, id:String, data: String, numeroMaxVoluntarios: String, vagasDisponiveis: String, onClick: () -> Unit) {
     val vagas = vagasDisponiveis.toIntOrNull() ?: 0
     val cardColor = if (vagas == 0) Color(0xFFFFEBEE) else Color(0xFFE8F5E9)
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick () }
             .padding(horizontal = 8.dp, vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp),

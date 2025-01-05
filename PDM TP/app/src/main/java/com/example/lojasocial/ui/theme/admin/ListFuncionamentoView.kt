@@ -34,6 +34,7 @@ fun ListFuncionamentoView(navController: NavController) {
     val state by viewModel.state
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         Column {
             TopBar(title = "Dias de Funcionamento", navController = navController)
 
@@ -43,6 +44,7 @@ fun ListFuncionamentoView(navController: NavController) {
                     items = state.list
                 ) { _, item ->
                     FuncionamentoCard(
+                        navController = navController,
                         id = item.id?: "",
                         data = item.data,
                         numeroMaxVoluntarios = item.numeroMaxVoluntarios.toString(),

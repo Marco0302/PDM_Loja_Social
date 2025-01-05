@@ -20,7 +20,7 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
     val viewModel: AddTransactionViewModel = viewModel()
     val state by viewModel.state
 
-    TopBar(title = "Adicionar transação", navController = navController)
+    TopBar(title = "Solicitar", navController = navController)
 
     Column(
         modifier = Modifier

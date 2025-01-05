@@ -40,6 +40,7 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
                         description = item.telefone ?: "",
                         onClick = {
                             navController.navigate("listAgregadoFamiliar/${item.id}")
+                            //navController.navigate("listPessoaisSolicitacaoPresenca/${item.id}")
                         }
                     )
                 }
