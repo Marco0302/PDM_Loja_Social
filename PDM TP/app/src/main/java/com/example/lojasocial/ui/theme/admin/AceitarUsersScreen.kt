@@ -31,7 +31,7 @@ fun AceitarUsersScreen(
 
     Scaffold(
         topBar = {
-            TopBar(title = "Aceitar Utilizadores Pendentes", navController = navController)
+            TopBar(title = "Gerir Utilizadores Pendentes", navController = navController)
         }
     ) { innerPadding ->
         Column(
