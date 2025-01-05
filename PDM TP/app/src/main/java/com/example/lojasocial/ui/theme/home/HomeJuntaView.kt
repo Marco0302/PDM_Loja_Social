@@ -22,10 +22,10 @@ import com.example.lojasocial.ui.theme.login.LoginViewModel
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
+fun HomeJuntaView(navController: NavController, modifier: Modifier = Modifier) {
     val viewModelLogin = LoginViewModel()
 
-    val userName = "Admin"
+    val userName = "Membro da Junta"
 
     Column(
         modifier = modifier
@@ -78,18 +78,6 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = { navController.navigate("listBeneficiario") }) {
-                Text(text = "Beneficiários")
-            }
-            Button(onClick = { navController.navigate("lisTransactions") }) {
-                Text(text = "Transações Monetárias")
-            }
-            Button(onClick = { navController.navigate("aceitarUser") }) {
-                Text(text = "Gerir Utilizadores")
-            }
-            Button(onClick = { navController.navigate("listFuncionamento") }) {
-                Text(text = "Gerir Presenças")
-            }
             Button(onClick = { navController.navigate("estatisticas") }) {
                 Text(text = "Relatórios Estatísticos")
             }
@@ -97,10 +85,3 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeViewPreview() {
-    LojaSocialTheme {
-        HomeView(navController = rememberNavController())
-    }
-}

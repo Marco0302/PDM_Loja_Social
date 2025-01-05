@@ -88,6 +88,7 @@ fun HomeViewVoluntario(
             Button(onClick = { navController.navigate("listHorarioFuncionamento") }) {
                 Text(text = "Horários de Funcionamento")
             }
+
         }
     }
 }

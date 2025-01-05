@@ -30,6 +30,7 @@ import com.example.lojasocial.ui.theme.beneficiario.ListBeneficiarioView
 import com.example.lojasocial.ui.theme.beneficiario.ListVisitasView
 import com.example.lojasocial.ui.theme.diasfuncionamento.ListHorariosFuncionamentoView
 import com.example.lojasocial.ui.theme.diasfuncionamento.ListPessoaisSolicitacoesPresencaView
+import com.example.lojasocial.ui.theme.home.HomeJuntaView
 import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
 import com.example.lojasocial.ui.theme.home.HorariosFuncionamentoView
@@ -38,6 +39,7 @@ import com.example.lojasocial.ui.theme.pedidos.AddPedidoView
 import com.example.lojasocial.ui.theme.pedidos.EditPedidoView
 import com.example.lojasocial.ui.theme.pedidos.ListPedidoView
 import com.example.lojasocial.ui.theme.register.RegisterView
+import com.example.lojasocial.ui.theme.relatorios.EstatisticasScreen
 import com.example.lojasocial.ui.theme.transacoes.AddTransactionView
 import com.example.lojasocial.ui.theme.transacoes.ListTransactionView
 import com.google.firebase.Firebase
@@ -66,7 +68,7 @@ class MainActivity : ComponentActivity() {
                                     when (role) {
                                         "voluntário" -> navController.navigate("homeVoluntario")
                                         "admin" -> navController.navigate("home")
-                                        "pendente" -> navController.navigate("home")
+                                        "membro da junta" -> navController.navigate("homeJunta")
                                         else -> navController.navigate("home")
                                     }
                                 }
@@ -81,6 +83,10 @@ class MainActivity : ComponentActivity() {
 
                         composable("homeVoluntario") {
                             HomeViewVoluntario(navController)
+                        }
+
+                        composable("homeJunta") {
+                            HomeJuntaView(navController)
                         }
 
 
@@ -199,6 +205,11 @@ class MainActivity : ComponentActivity() {
                             AceitarUsersScreen(navController)
                         }
 
+                        composable("estatisticas"){
+                            EstatisticasScreen(navController)
+                        }
+
+
                     }
                 }
             }
@@ -209,7 +220,7 @@ class MainActivity : ComponentActivity() {
                         when (role) {
                             "voluntário" -> navController.navigate("homeVoluntario")
                             "admin" -> navController.navigate("home")
-                            "pendente" -> navController.navigate("home")
+                            "membro da junta" -> navController.navigate("homeJunta")
                             else -> navController.navigate("home") // Default
                         }
                     },

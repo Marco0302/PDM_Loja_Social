@@ -68,5 +68,6 @@ dependencies {
 
     //
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-
+    // Biblioteca de gráficos
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
