@@ -81,7 +81,7 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
             Button(onClick = { navController.navigate("listBeneficiario") }) {
                 Text(text = "Beneficiários")
             }
-            Button(onClick = { navController.navigate("lisTransactions") }) {
+            Button(onClick = { navController.navigate("listTransacao") }) {
                 Text(text = "Transações Monetárias")
             }
             Button(onClick = { navController.navigate("aceitarUser") }) {
@@ -89,6 +89,9 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
             }
             Button(onClick = { navController.navigate("listFuncionamento") }) {
                 Text(text = "Gerir Presenças")
+            }
+            Button(onClick = { navController.navigate("listPedido") }) {
+                Text(text = "Pedidos Especiais")
             }
             Button(onClick = { navController.navigate("estatisticas") }) {
                 Text(text = "Relatórios Estatísticos")
