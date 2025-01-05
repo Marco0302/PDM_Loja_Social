@@ -26,20 +26,28 @@ import com.example.lojasocial.ui.theme.usercontrol.AgregadoFamiliarCard
 
 @Composable
 fun ListSolicitacaoPresencaView(navController: NavController, diaFuncionamentoId: String) {
-    var item by remember { mutableStateOf<List<CandidaturaHorarioFuncionamento>?>(null) }
+    var itemsSolicitacao by remember { mutableStateOf<List<CandidaturaHorarioFuncionamento>?>(null) }
     var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(diaFuncionamentoId) {
+    // Função para recarregar a lista
+    fun carregarSolicitacoes() {
+        isLoading = true
         CandidaturaHorarioFuncionamentoRepository.fetchItems(
             listId = diaFuncionamentoId,
             onSuccess = { fetchedItems ->
-                item = fetchedItems
+                itemsSolicitacao = fetchedItems
                 isLoading = false
             },
-            onFailure = {
+            onFailure = { error ->
+                errorMessage = error
                 isLoading = false
             }
         )
+    }
+
+    LaunchedEffect(diaFuncionamentoId) {
+        carregarSolicitacoes()
     }
 
     TopBar("Solicitações de Presença", navController = navController)
@@ -52,28 +60,111 @@ fun ListSolicitacaoPresencaView(navController: NavController, diaFuncionamentoId
         ) {
             Spacer(modifier = Modifier.height(80.dp))
 
-            if (isLoading)
-            {
+            if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-            }
-            else {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    item?.let {
-                        items(it) { item ->
-                            AgregadoFamiliarCard(
+            } else {
+                errorMessage?.let {
+                    // Exibe erro, caso haja
+                    Text(
+                        text = "Erro: $it",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+
+                // Se não está carregando, exibe a lista
+                itemsSolicitacao?.let { lista ->
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(lista) { solicitacao ->
+                            SolicitacaoCard(
                                 navController = navController,
-                                name = item.nome ?: "",
-                                quantity = item.estado ?: "",
-                                onClick = { /* Lógica do clique */ }
+                                diaFuncionamentoId = diaFuncionamentoId,
+                                solicitacao = solicitacao,
+                                onRefresh = {
+                                    // Após atualizar estado, recarrega a lista
+                                    carregarSolicitacoes()
+                                }
                             )
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun SolicitacaoCard(
+    navController: NavController,
+    diaFuncionamentoId: String,
+    solicitacao: CandidaturaHorarioFuncionamento,
+    onRefresh: () -> Unit
+) {
+    // Aqui exibimos as informações básicas
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(text = "Nome: ${solicitacao.nome}")
+            Text(text = "Estado: ${solicitacao.estado}")
+            Text(text = "Data: ${solicitacao.data}")
+
+            // Se for "Pendente", mostra botões
+            if (solicitacao.estado == "Pendente") {
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            // Atualiza estado para "Confirmado"
+                            CandidaturaHorarioFuncionamentoRepository.updateSolicitacaoEstado(
+                                horarioId = diaFuncionamentoId,
+                                solicitacaoId = solicitacao.id,
+                                novoEstado = "Confirmado",
+                                onSuccess = {
+                                    onRefresh()
+                                },
+                                onFailure = {
+                                    // Você pode mostrar um Toast ou algo similar
+                                }
+                            )
+                        }
+                    ) {
+                        Text("Confirmar")
+                    }
+
+                    Button(
+                        onClick = {
+                            // Atualiza estado para "Rejeitado"
+                            CandidaturaHorarioFuncionamentoRepository.updateSolicitacaoEstado(
+                                horarioId = diaFuncionamentoId,
+                                solicitacaoId = solicitacao.id,
+                                novoEstado = "Rejeitado",
+                                onSuccess = {
+                                    onRefresh()
+                                },
+                                onFailure = {
+                                    // Você pode mostrar um Toast ou algo similar
+                                }
+                            )
+                        }
+                    ) {
+                        Text("Rejeitar")
+                    }
+                }
+            } else {
+                // Se quiser, pode exibir algo informando que já foi tratado
+                Text("Esta solicitação já está em: ${solicitacao.estado}")
             }
         }
     }
