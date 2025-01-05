@@ -40,7 +40,7 @@ class AddBeneficiarioViewModel : ViewModel() {
 
     fun add(onSuccess: () -> Unit)
     {
-        if(nome.isEmpty() || nacionalidade.isEmpty())
+        if(nome.isEmpty() || telefone.isEmpty() || nacionalidade.isEmpty())
         {
             onErrorMessage("Deve preencher os campos corretamente...")
         }

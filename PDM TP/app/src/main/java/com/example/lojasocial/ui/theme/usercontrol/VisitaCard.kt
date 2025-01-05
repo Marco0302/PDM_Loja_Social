@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,10 +35,9 @@ import androidx.navigation.NavController
 import com.example.lojasocial.ui.theme.appFontBold16
 
 @Composable
-fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: String, onClick: () -> Unit) {
+fun VisitaCard(navController: NavController, name: String, quantity: String, onClick: () -> Unit) {
     var itemCount by remember { mutableIntStateOf(0) }
     var menuExpanded by remember { mutableStateOf(false) }
-
 
     Card(
         modifier = Modifier
@@ -62,7 +61,7 @@ fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: S
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.Face,
+                    imageVector = Icons.Default.Info,
                     contentDescription = "",
                     tint = Color(0xFF757575),
                     modifier = Modifier.size(30.dp)
@@ -76,8 +75,7 @@ fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: S
                 modifier = Modifier.weight(1f)
             )
             {
-                InfoRow(icon = null, text = name, estilo = appFontBold16)
-                InfoRow(icon = null, text = quantity, estilo = MaterialTheme.typography.bodyMedium)
+                InfoRow(icon = null, text = quantity, estilo = appFontBold16)
             }
 
             Spacer(modifier = Modifier.width(16.dp))

@@ -3,6 +3,10 @@ package com.example.lojasocial.ui.theme.beneficiario
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,6 +58,7 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
             value = state.nome,
             onValueChange = viewModel::onNomeChange,
             label = { Text("nome") },
+            leadingIcon = { Icon(Icons.Filled.Person, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -67,6 +72,7 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
             value = state.telefone,
             onValueChange = viewModel::onTelefoneChange,
             label = { Text("telefone") },
+            leadingIcon = { Icon(Icons.Filled.Phone, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -80,6 +86,7 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
             value = state.nacionalidade,
             onValueChange = viewModel::onNacionalidadeChange,
             label = { Text("nacionalidade") },
+            leadingIcon = { Icon(Icons.Filled.Place, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -91,9 +98,7 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
 
         Button(
             onClick = {
-                val success = viewModel.editList(id)
-                if(success)
-                    navController.popBackStack()
+               viewModel.edit(id, onSuccess = { navController.popBackStack()})
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
             enabled = !state.isLoading

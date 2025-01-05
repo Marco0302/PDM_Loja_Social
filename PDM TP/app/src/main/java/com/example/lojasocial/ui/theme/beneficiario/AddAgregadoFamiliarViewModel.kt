@@ -32,7 +32,7 @@ class AddAgregadoFamiliarViewModel : ViewModel() {
         state.value = state.value.copy(errorMessage = error)
     }
 
-    fun add(onSuccess: () -> Unit, beneficiarioID : String){
+    fun add(beneficiarioID : String, onSuccess: () -> Unit){
 
         if (nome.isEmpty() && parentesco.isEmpty())
         {

@@ -76,7 +76,6 @@ object BeneficiarioRepository {
         nome: String,
         telefone: String,
         nacionalidade: String,
-        agregadoFamiliar: String,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     )
@@ -85,7 +84,6 @@ object BeneficiarioRepository {
             "nome" to nome,
             "telefone" to telefone,
             "nacionalidade" to nacionalidade,
-            "agregadoFamiliar" to agregadoFamiliar,
         )
 
         db.collection("beneficiario")

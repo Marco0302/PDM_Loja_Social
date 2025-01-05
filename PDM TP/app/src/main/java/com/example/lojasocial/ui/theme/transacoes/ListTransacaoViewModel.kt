@@ -3,7 +3,6 @@ package com.example.lojasocial.ui.theme.transacoes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.lojasocial.data.models.Transacao
-import com.example.lojasocial.data.repository.HorariosRepository
 import com.example.lojasocial.data.repository.TransacaoRepository
 
 data class ListTransacaoState(

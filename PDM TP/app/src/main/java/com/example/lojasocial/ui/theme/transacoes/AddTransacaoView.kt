@@ -2,6 +2,9 @@ package com.example.lojasocial.ui.theme.transacoes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +38,7 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
             value = state.descricao,
             onValueChange = viewModel::onDescriptionChange,
             label = { Text("descrição") },
+            leadingIcon = { Icon(Icons.Filled.Create, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -48,6 +52,7 @@ fun AddTransactionView(navController: NavController = rememberNavController()) {
             value = state.valor,
             onValueChange = viewModel::onAmountChange,
             label = { Text("valor") },
+            leadingIcon = { Icon(Icons.Filled.Info, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
