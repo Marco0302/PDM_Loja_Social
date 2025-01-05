@@ -14,7 +14,6 @@ data class CreateAgregadoFamiliarState(
 
 class AddAgregadoFamiliarViewModel : ViewModel() {
     var state = mutableStateOf(CreateAgregadoFamiliarState())
-        private set
 
     private val nome
         get() = state.value.nome
@@ -29,8 +28,21 @@ class AddAgregadoFamiliarViewModel : ViewModel() {
         state.value = state.value.copy(parentesco = newValue)
     }
 
-    fun create(beneficiarioID : String) : Boolean{
-        AgregadoFamiliarRepository.addAgregadoFamiliar(beneficiarioID, nome, parentesco)
-        return true
+    private fun onErrorMessage(error: String){
+        state.value = state.value.copy(errorMessage = error)
     }
+
+    fun add(onSuccess: () -> Unit, beneficiarioID : String){
+
+        if (nome.isEmpty() && parentesco.isEmpty())
+        {
+            onErrorMessage("Deve preencher os campos corretamente...")
+        }
+        else
+        {
+            AgregadoFamiliarRepository.addAgregadoFamiliar(beneficiarioID, nome, parentesco,
+                onSuccess = onSuccess, onFailure = {} )
+        }
+    }
+
 }

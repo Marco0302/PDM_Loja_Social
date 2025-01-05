@@ -18,7 +18,7 @@ class ShowListItemsViewModel : ViewModel(){
     fun loadListBeneficiario() {
         BeneficiarioRepository.getAll(
             onSuccess = { list -> state.value = state.value.copy(list = list) },
-            onFailure = { exception -> state.value = state.value.copy(errorMessage = exception.message) }
+            onFailure = { exception -> state.value = state.value.copy(errorMessage = exception) }
         )
     }
 

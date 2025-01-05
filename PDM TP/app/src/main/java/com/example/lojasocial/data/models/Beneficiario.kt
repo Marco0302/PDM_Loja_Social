@@ -1,12 +1,12 @@
 package com.example.lojasocial.data.models
 
 data class Beneficiario(
-    val id: String,
-    var nome: String,
-    var telefone: String,
-    val nacionalidade: String,
-    var numeroVisita: Long,
-    val criadoPor: String
+    val id: String = "",
+    var nome: String = "",
+    var telefone: String = "",
+    val nacionalidade: String = "",
+    var numeroVisita: Long = 0,
+    val criadoPor: String = ""
 )
 {
     companion object {

@@ -42,35 +42,6 @@ object TransacaoRepository {
             }
     }
 
-    /*fun getAll(
-        onSuccess: (List<Transacao>) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        db.collection("transacao")
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Log.w(TAG, "Listen failed.", error)
-                    return@addSnapshotListener
-                }
-
-                val listTransaction = mutableListOf<Transacao>()
-                value?.let {
-                    for (document in it.documents) {
-                        try {
-                            document.data?.let { data ->
-                                val transaction = Transacao.fromMap(data)
-                                listTransaction.add(transaction)
-                            }
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Erro: ${document.id}", e)
-                        }
-                    }
-                }
-                onSuccess(listTransaction)
-            }
-        }
-    }*/
-
     fun getAll(
         onSuccess: (List<Transacao>) -> Unit,
         onFailure: (Exception) -> Unit

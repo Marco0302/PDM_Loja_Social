@@ -27,20 +27,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.data.models.Beneficiario
+import com.example.lojasocial.ui.theme.bars.TopBar
 
 @Composable
 fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String) {
     val viewModel: AddAgregadoFamiliarViewModel = viewModel()
     val state by viewModel.state
 
+    TopBar(title = "Adicionar Agregado Familiar", navController = navController)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(80.dp))
 
         TextField(
             value = state.nome,
@@ -51,9 +55,7 @@ fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier.fillMaxWidth(0.8f)
-                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
+            shape = RoundedCornerShape(12.dp),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -67,42 +69,23 @@ fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            shape = RoundedCornerShape(20.dp),
-            modifier = Modifier.fillMaxWidth(0.8f)
-                .shadow(4.dp, shape = RoundedCornerShape(20.dp))
+            shape = RoundedCornerShape(12.dp),
         )
-
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
         Button(
-            onClick = {
-                if (state.nome.isNotEmpty() && state.parentesco.isNotEmpty())
-                {
-                    val success = viewModel.create(beneficiarioId)
-                    if(success)
-                        navController.popBackStack()
-                }
-                else
-                {
-                    state.errorMessage = "preencha todos os campos."
-                }
-            },
+            onClick = { viewModel.add(onSuccess = { navController.popBackStack() }, beneficiarioId) },
             colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
             enabled = !state.isLoading
         )
         {
-            Text(if (state.isLoading) "carregando..." else "adicionar agregado familiar")
+            Text(if (state.isLoading) "a carregar..." else "adicionar")
         }
 
-        if (state.errorMessage != null) {
-            Text(
-                text = state.errorMessage ?: "",
-                color = Color.Red,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+        Spacer(modifier = Modifier.height(16.dp))
+        state.errorMessage?.let {
+            Text(text = it, color = MaterialTheme.colorScheme.error)
         }
 
     }

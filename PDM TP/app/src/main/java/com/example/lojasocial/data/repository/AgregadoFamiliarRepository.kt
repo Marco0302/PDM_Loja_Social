@@ -1,6 +1,7 @@
 package com.example.lojasocial.data.repository
 
 import com.example.lojasocial.data.models.AgregadoFamiliar
+import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
@@ -15,18 +16,20 @@ object AgregadoFamiliarRepository {
         db.collection("beneficiario")
             .document(listTypeId)
             .collection("agregadoFamiliar")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                val items = querySnapshot.documents.mapNotNull { it.toObject(AgregadoFamiliar::class.java) }
-                onSuccess(items)
-            }
-            .addOnFailureListener { e ->
-                onFailure("Erro: ${e.message}")
+            .addSnapshotListener { querySnapshot, error ->
+                if (error != null)
+                {
+                    onFailure(error.message.toString())
+                } else
+                {
+                    val lista = querySnapshot?.toObjects(AgregadoFamiliar::class.java).orEmpty()
+                    onSuccess(lista)
+                }
             }
     }
 
     fun addAgregadoFamiliar(
-        listTypeId: String, name: String, parentesco: String){
+        listTypeId: String, name: String, parentesco: String, onSuccess: () -> Unit, onFailure: (String) -> Unit){
         val listItem = AgregadoFamiliar(id = "", nome = name, parentesco = parentesco)
 
         BeneficiarioRepository.db.collection("beneficiario")
@@ -34,10 +37,10 @@ object AgregadoFamiliarRepository {
             .collection("agregadoFamiliar")
             .add(listItem)
             .addOnSuccessListener {
-                //onSuccess()
+                onSuccess()
             }
-            .addOnFailureListener { exception ->
-                //onFailure()
+            .addOnFailureListener { error ->
+                onFailure("Erro: ${error.message}")
             }
     }
 

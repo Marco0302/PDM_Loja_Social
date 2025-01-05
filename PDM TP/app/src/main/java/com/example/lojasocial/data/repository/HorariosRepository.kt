@@ -52,7 +52,6 @@ object HorariosRepository {
     }
 
     fun addSolicitacaoPresenca(diaFuncionamentoID: String) {
-        // Obter utilizador atualmente logado
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {

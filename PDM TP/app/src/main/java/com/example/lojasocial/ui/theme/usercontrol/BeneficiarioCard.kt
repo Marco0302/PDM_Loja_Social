@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -24,6 +25,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,20 +40,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.lojasocial.data.repository.BeneficiarioRepository
+import com.example.lojasocial.data.repository.HorariosRepository
 import com.example.lojasocial.ui.theme.appFontBold16
+import com.example.lojasocial.ui.theme.diasfuncionamento.ConfirmationDialog
 
 @Composable
-fun BeneficiarioCard(navController: NavController, id: String, name: String, description: String, onClick: () -> Unit) {
+fun BeneficiarioCard(navController: NavController, id: String, name: String, description: String, numeroVisitas: String , onClick: () -> Unit) {
     var itemCount by remember { mutableIntStateOf(0) }
     var menuExpanded by remember { mutableStateOf(false) }
-
-    LaunchedEffect(id) {
-        //countItems(
-        //    listTypeId = id,
-        //    onSuccess = { count -> itemCount = count },
-        //    onFailure = { }
-        //)
-    }
+    var showDialog by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -76,7 +74,7 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "List Icon",
+                    contentDescription = "",
                     tint = Color(0xFF757575),
                     modifier = Modifier.size(30.dp)
                 )
@@ -93,7 +91,7 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
                 InfoRow(icon = null, text = description, estilo = MaterialTheme.typography.bodyMedium)
                 InfoRow(
                     icon = null,
-                    text = "nº visitas: $itemCount",
+                    text = "nº visitas: $numeroVisitas",
                     estilo = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -115,17 +113,9 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
                 ) {
 
                     DropdownMenuItem(
-                        text = { Text("novo agregado") },
-                        onClick = {
-                            navController.navigate("addAgregadoFamiliar/$id")
-                            menuExpanded = false
-                        }
-                    )
-
-                    DropdownMenuItem(
                         text = { Text("nova visita") },
                         onClick = {
-                            navController.navigate("addNewItem/$id")
+                            showDialog = true
                             menuExpanded = false
                         }
                     )
@@ -147,11 +137,46 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
             }
         }
     }
+
+    if (showDialog) {
+        NovaVisitaDialog(id,
+            onConfirm = {
+                showDialog = false
+            },
+            onDismiss = { showDialog = false }
+        )
+    }
+
+}
+
+@Composable
+fun NovaVisitaDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text(text = "Nova Visita") },
+        text = { Text("Tem a certeza que pretende marcar como nova visita?") },
+        confirmButton = {
+            TextButton(onClick = {
+                BeneficiarioRepository.addNovaVisita(id, onSuccess = {
+                    onConfirm()
+                }, onFailure = {
+                    onDismiss()
+                })
+            }) {
+                Text("Sim")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text("Não")
+            }
+        }
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewListCard(){
     BeneficiarioCard(navController = rememberNavController(), id = "1", name = "Lista de Compras",
-        description = "Marco Oliveira", onClick = {})
+        description = "Marco Oliveira", numeroVisitas = "0" , onClick = {})
 }

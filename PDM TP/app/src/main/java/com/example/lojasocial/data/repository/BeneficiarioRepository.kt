@@ -4,7 +4,9 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.lojasocial.data.models.Beneficiario
 import com.example.lojasocial.data.models.HorarioFuncionamento
+import com.example.lojasocial.data.models.Transacao
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 object BeneficiarioRepository {
@@ -56,29 +58,16 @@ object BeneficiarioRepository {
 
     fun getAll(
         onSuccess: (List<Beneficiario>) -> Unit,
-        onFailure: (Exception) -> Unit
+        onFailure: (String) -> Unit
     ) {
         db.collection("beneficiario")
-            .addSnapshotListener { value, error ->
+            .addSnapshotListener { querySnapshot, error ->
                 if (error != null) {
-                    Log.w(TAG, "Listen failed.", error)
-                    return@addSnapshotListener
+                    onFailure("Erro: ${error.message}")
+                } else {
+                    val lista = querySnapshot?.toObjects(Beneficiario::class.java).orEmpty()
+                    onSuccess(lista)
                 }
-
-                val listBeneficiary = mutableListOf<Beneficiario>()
-                value?.let {
-                    for (document in it.documents) {
-                        try {
-                            document.data?.let { data ->
-                                val beneficiary = Beneficiario.fromMap(data)
-                                listBeneficiary.add(beneficiary)
-                            }
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Erro: ${document.id}", e)
-                        }
-                    }
-                }
-                onSuccess(listBeneficiary)
             }
     }
 
@@ -121,4 +110,29 @@ object BeneficiarioRepository {
                 onFailure(exception)
             }
     }
+
+    fun addNovaVisita(id: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit){
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("beneficiario").document(id)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    db.collection("beneficiario").document(id)
+                        .update("numeroVisita", FieldValue.increment(1))
+                        .addOnSuccessListener {
+                            onSuccess()
+                        }
+                        .addOnFailureListener { exception ->
+                            onFailure(exception)
+                        }
+                } else {
+                    onFailure(Exception("Documento não encontrado"))
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
 }
