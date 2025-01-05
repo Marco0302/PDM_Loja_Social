@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -64,7 +65,7 @@ fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String
             value = state.parentesco,
             onValueChange = viewModel::onParentescoChange,
             label = { Text("parantesco") },
-            leadingIcon = { Icon(Icons.Filled.AccountCircle, contentDescription = "") },
+            leadingIcon = { Icon(Icons.Filled.Face, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -75,7 +76,7 @@ fun AddAgregadoFamiliarView(navController: NavController, beneficiarioId: String
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { viewModel.add(onSuccess = { navController.popBackStack() }, beneficiarioId) },
+            onClick = { viewModel.add(beneficiarioId, onSuccess = { navController.popBackStack() } ) },
             colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
             enabled = !state.isLoading
         )

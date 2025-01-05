@@ -37,6 +37,7 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
     Box(modifier = modifier.fillMaxSize()) {
 
         Column {
+
             TopBar(title = "Lista de Beneficiários", navController = navController)
 
             TextField(

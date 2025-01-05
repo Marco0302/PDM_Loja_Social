@@ -123,6 +123,13 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
                         }
                     )
                     DropdownMenuItem(
+                        text = { Text("histórico visitas") },
+                        onClick = {
+                            navController.navigate("listVisitas/$id")
+                            menuExpanded = false
+                        }
+                    )
+                    DropdownMenuItem(
                         text = { Text("pedidos") },
                         onClick = {
                             navController.navigate("shareList/$id")
@@ -173,6 +180,5 @@ fun NovaVisitaDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewListCard(){
-    BeneficiarioCard(navController = rememberNavController(), id = "1", name = "Lista de Compras",
-        description = "Marco Oliveira", onClick = {})
+    BeneficiarioCard(navController = rememberNavController(), id = "1", "Marco Oliveira", "Marco Oliveira", onClick = {})
 }

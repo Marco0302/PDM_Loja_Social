@@ -16,7 +16,6 @@ data class EditListState(
 
 class EditBeneficiarioViewModel : ViewModel() {
     var state = mutableStateOf(EditListState())
-        private set
 
     private val nome
         get() = state.value.nome
@@ -45,18 +44,16 @@ class EditBeneficiarioViewModel : ViewModel() {
         state.value = state.value.copy(errorMessage = error)
     }
 
-    fun editList(id: String): Boolean {
-        if(nome.isEmpty() || telefone.isEmpty())
+    fun edit(id: String, onSuccess: () -> Unit)
+    {
+        if(nome.isEmpty() || telefone.isEmpty() || nacionalidade.isEmpty())
         {
             onErrorMessage("Deve preencher os campos corretamente...")
-            return false;
         }
         else
         {
-            BeneficiarioRepository.updateBeneficiario(id, nome, telefone, "Portuguesa", "",
-                onSuccess = { /*navController.navigate("home")*/ },
-                onFailure = { /*message -> state.errorMessage = message*/ })
-            return true;
+            BeneficiarioRepository.updateBeneficiario(id, nome, telefone, nacionalidade,
+                onSuccess = onSuccess, onFailure = { })
         }
     }
 
