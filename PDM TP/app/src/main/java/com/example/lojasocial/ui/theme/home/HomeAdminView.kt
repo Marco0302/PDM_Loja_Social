@@ -1,72 +1,101 @@
 package com.example.lojasocial.ui.theme.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.ui.theme.LojaSocialTheme
 import com.example.lojasocial.ui.theme.login.LoginViewModel
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun HomeView(navController: NavController, modifier: Modifier = Modifier){
+fun HomeView(navController: NavController, modifier: Modifier = Modifier) {
     val viewModelLogin = LoginViewModel()
 
-    Box(modifier = modifier.fillMaxSize() ){
-        Column(modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally)
-        {
-            Button(onClick = {
-                navController.navigate("listBeneficiario")
-            }) {
-                Text(text = "beneficiários")
+    // Exemplo: se você tiver o nome do user no viewModel, pode pegar aqui
+    // val userName = viewModelLogin.userName
+    // ou algo do gênero. Vou usar um placeholder por agora:
+    val userName = "Fulano"
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // 1) Cabeçalho (Top Section) ----------------------------------
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // -- Parte Esquerda: Imagem e Nome --
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // Circulo cinza (imagem placeholder)
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .background(LightGray)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = userName,
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
 
-            Button(onClick = {
-                navController.navigate("listTransacao")
-            }) {
-                Text(text = "transações monetárias")
-            }
-
-            Button(onClick = {
-                navController.navigate("listPedido")
-            }) {
-                Text(text = "pedidos especiais")
-            }
-
-            Button(onClick = {
-                navController.navigate("aceitarUser")
-            }) {
-                Text(text = "gerir utilizadores")
-            }
-
-            Button(onClick = {
-                navController.navigate("listFuncionamento")
-            }) {
-                Text(text = "gerir presenças")
-            }
-
-            Button(onClick = {
-                navController.navigate("showLists")
-            }) {
-                Text(text = "relatórios estatísticos")
-            }
-
-            Button(onClick = { viewModelLogin.logout(
-                onLogoutSuccess = { navController.navigate("login") }) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+            // -- Parte Direita: Botão Logout --
+            Button(
+                onClick = {
+                    viewModelLogin.logout(
+                        onLogoutSuccess = { navController.navigate("login") }
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = DarkGray)
             ) {
-                Text("logout")
+                Text(text = "Logout", color = Color.White)
+            }
+        }
+
+        // 2) Coluna Central (Funções) ----------------------------------
+        // Usamos um Spacer para separar do topo, se quiser
+        // Spacer(modifier = Modifier.height(20.dp))
+
+        // Coluna com os botões
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { navController.navigate("listBeneficiario") }) {
+                Text(text = "Beneficiários")
+            }
+            Button(onClick = { navController.navigate("lisTransactions") }) {
+                Text(text = "Transações Monetárias")
+            }
+            Button(onClick = { navController.navigate("aceitarUser") }) {
+                Text(text = "Gerir Utilizadores")
+            }
+            Button(onClick = { navController.navigate("listFuncionamento") }) {
+                Text(text = "Gerir Presenças")
+            }
+            Button(onClick = { navController.navigate("showLists") }) {
+                Text(text = "Relatórios Estatísticos")
             }
         }
     }
@@ -74,8 +103,8 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
 
 @Preview(showBackground = true)
 @Composable
-fun ListTypesViewPreview() {
-    LojaSocialTheme() {
+fun HomeViewPreview() {
+    LojaSocialTheme {
         HomeView(navController = rememberNavController())
     }
 }
