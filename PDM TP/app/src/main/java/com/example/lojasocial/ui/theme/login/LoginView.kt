@@ -50,7 +50,7 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(12.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -64,7 +64,7 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 visualTransformation = PasswordVisualTransformation(),
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(12.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

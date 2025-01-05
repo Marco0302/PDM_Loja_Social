@@ -3,12 +3,18 @@ package com.example.lojasocial.ui.theme.beneficiario
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,16 +28,36 @@ import com.example.lojasocial.ui.theme.usercontrol.BeneficiarioCard
 fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modifier) {
     val viewModel: ShowListItemsViewModel = viewModel()
     val state by viewModel.state
+    var searchQuery by remember { mutableStateOf("") }
+
+    val listaFiltrada = state.list.filter {
+        it.nome?.contains(searchQuery, ignoreCase = true) == true
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
 
         Column {
             TopBar(title = "Lista de Beneficiários", navController = navController)
 
+            TextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                label = { Text("pesquisar benificiario") },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "") },
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+            )
+
             LazyColumn(contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 itemsIndexed(
-                    items = state.list
+                    items = listaFiltrada
                 ) { _, item ->
                     BeneficiarioCard(
                         navController = navController,
@@ -41,7 +67,6 @@ fun ListBeneficiarioView(navController: NavController, modifier: Modifier = Modi
                         numeroVisitas = item.numeroVisita.toString(),
                         onClick = {
                             navController.navigate("listAgregadoFamiliar/${item.id}")
-                            //navController.navigate("listPessoaisSolicitacaoPresenca/${item.id}")
                         }
                     )
                 }
