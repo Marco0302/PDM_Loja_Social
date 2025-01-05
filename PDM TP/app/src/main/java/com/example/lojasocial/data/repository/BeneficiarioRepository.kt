@@ -30,7 +30,7 @@ object BeneficiarioRepository {
 
                         val beneficiario = Beneficiario(
                             id = "", nome = nome, telefone = telefone,
-                            nacionalidade = nacionalidade, numeroVisita = 0, criadoPor = userName
+                            nacionalidade = nacionalidade, criadoPor = userName
                         )
 
                         db.collection("beneficiario")

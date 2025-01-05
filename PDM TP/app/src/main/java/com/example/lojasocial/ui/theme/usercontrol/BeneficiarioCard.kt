@@ -42,11 +42,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.data.repository.BeneficiarioRepository
 import com.example.lojasocial.data.repository.HorariosRepository
+import com.example.lojasocial.data.repository.VisitasRepository
 import com.example.lojasocial.ui.theme.appFontBold16
 import com.example.lojasocial.ui.theme.diasfuncionamento.ConfirmationDialog
 
 @Composable
-fun BeneficiarioCard(navController: NavController, id: String, name: String, description: String, numeroVisitas: String , onClick: () -> Unit) {
+fun BeneficiarioCard(navController: NavController, id: String, name: String, description: String, onClick: () -> Unit) {
     var itemCount by remember { mutableIntStateOf(0) }
     var menuExpanded by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -89,11 +90,6 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
             {
                 InfoRow(icon = null, text = name, estilo = appFontBold16)
                 InfoRow(icon = null, text = description, estilo = MaterialTheme.typography.bodyMedium)
-                InfoRow(
-                    icon = null,
-                    text = "nº visitas: $numeroVisitas",
-                    estilo = MaterialTheme.typography.bodyMedium
-                )
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -157,7 +153,7 @@ fun NovaVisitaDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
         text = { Text("Tem a certeza que pretende marcar como nova visita?") },
         confirmButton = {
             TextButton(onClick = {
-                BeneficiarioRepository.addNovaVisita(id, onSuccess = {
+                VisitasRepository.addVisita(id, onSuccess = {
                     onConfirm()
                 }, onFailure = {
                     onDismiss()
@@ -178,5 +174,5 @@ fun NovaVisitaDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
 @Composable
 fun PreviewListCard(){
     BeneficiarioCard(navController = rememberNavController(), id = "1", name = "Lista de Compras",
-        description = "Marco Oliveira", numeroVisitas = "0" , onClick = {})
+        description = "Marco Oliveira", onClick = {})
 }
