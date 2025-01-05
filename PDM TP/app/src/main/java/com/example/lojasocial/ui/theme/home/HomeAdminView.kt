@@ -33,9 +33,15 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
             }
 
             Button(onClick = {
-                navController.navigate("lisTransactions")
+                navController.navigate("listTransacao")
             }) {
                 Text(text = "transações monetárias")
+            }
+
+            Button(onClick = {
+                navController.navigate("listPedido")
+            }) {
+                Text(text = "pedidos especiais")
             }
 
             Button(onClick = {

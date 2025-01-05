@@ -2,46 +2,38 @@ package com.example.lojasocial.ui.theme.usercontrol
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.lojasocial.ui.theme.appFontBold16
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 
 @Composable
-fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: String, onClick: () -> Unit) {
+fun PedidoCard(navController: NavController, id:String, descricao: String, estado: String, data: Long) {
     var menuExpanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick () }
             .padding(horizontal = 8.dp, vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp),
@@ -60,7 +52,7 @@ fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: S
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.Face,
+                    imageVector = Icons.Default.Favorite,
                     contentDescription = "",
                     tint = Color(0xFF757575),
                     modifier = Modifier.size(30.dp)
@@ -74,8 +66,8 @@ fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: S
                 modifier = Modifier.weight(1f)
             )
             {
-                InfoRow(icon = null, text = name, estilo = appFontBold16)
-                InfoRow(icon = null, text = quantity, estilo = MaterialTheme.typography.bodyMedium)
+                InfoRow(icon = null, text = descricao, estilo = appFontBold16)
+                InfoRow(icon = null, text = estado, estilo = MaterialTheme.typography.bodyMedium)
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -88,7 +80,26 @@ fun AgregadoFamiliarCard(navController: NavController, name: String, quantity: S
                         .clickable { menuExpanded = true }
                         .padding(8.dp)
                 )
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("editar") },
+                        onClick = {
+                            navController.navigate("editPedido/$id")
+                            menuExpanded = false
+                        }
+                    )
+                }
             }
         }
     }
+
 }
+
+/*fun convertDateToString(date: Date, format: String = "dd/MM/yyyy"): String {
+    val formatter = SimpleDateFormat(format, Locale.getDefault())
+    return formatter.format(date)
+}*/

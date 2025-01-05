@@ -31,7 +31,7 @@ fun AceitarUsersScreen(
 
     Scaffold(
         topBar = {
-            TopBar(title = "Aceitar Utilizadores Pendentes", navController = navController)
+            TopBar(title = "Utilizadores Pendentes", navController = navController)
         }
     ) { innerPadding ->
         Column(
@@ -40,15 +40,7 @@ fun AceitarUsersScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            Text(
-                text = "Lista de Utilizadores Pendentes",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(8.dp)
-            )
 
-            // Exibe mensagem de erro, se existir
             errorMessage?.let {
                 Text(
                     text = "Erro: $it",

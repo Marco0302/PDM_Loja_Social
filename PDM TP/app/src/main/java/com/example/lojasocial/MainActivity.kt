@@ -34,6 +34,9 @@ import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
 import com.example.lojasocial.ui.theme.home.HorariosFuncionamentoView
 import com.example.lojasocial.ui.theme.login.LoginView
+import com.example.lojasocial.ui.theme.pedidos.AddPedidoView
+import com.example.lojasocial.ui.theme.pedidos.EditPedidoView
+import com.example.lojasocial.ui.theme.pedidos.ListPedidoView
 import com.example.lojasocial.ui.theme.register.RegisterView
 import com.example.lojasocial.ui.theme.transacoes.AddTransactionView
 import com.example.lojasocial.ui.theme.transacoes.ListTransactionView
@@ -82,7 +85,7 @@ class MainActivity : ComponentActivity() {
 
 
                         //Transacoes
-                        composable("lisTransactions"){
+                        composable("listTransacao"){
                             ListTransactionView(navController)
                         }
                         composable("addTransacao"){
@@ -98,6 +101,7 @@ class MainActivity : ComponentActivity() {
                         composable("addBeneficiario"){
                             AddBeneficiarioView(navController)
                         }
+
 
                         composable(
                             route = "listAgregadoFamiliar/{id}",
@@ -124,6 +128,28 @@ class MainActivity : ComponentActivity() {
                         { backStackEntry ->
                             val id = backStackEntry.arguments?.getString("id") ?: ""
                             AddAgregadoFamiliarView(navController, id)
+                        }
+
+                        composable("listPedido"){
+                            ListPedidoView(navController)
+                        }
+
+                        composable(
+                            route = "addPedido/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            AddPedidoView(navController, id)
+                        }
+
+                        composable(
+                            route = "editPedido/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        )
+                        { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            EditPedidoView(navController, id)
                         }
 
                         composable(

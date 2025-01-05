@@ -3,5 +3,5 @@ import java.util.Date
 
 data class Visita(
     val id: String = "",
-    var data: String = ""
+    val data: String = ""
 )

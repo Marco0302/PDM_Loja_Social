@@ -130,12 +130,13 @@ fun BeneficiarioCard(navController: NavController, id: String, name: String, des
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("pedidos") },
+                        text = { Text("novo pedido") },
                         onClick = {
-                            navController.navigate("shareList/$id")
+                            navController.navigate("addPedido/$id")
                             menuExpanded = false
                         }
                     )
+
                 }
             }
         }
