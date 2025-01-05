@@ -47,7 +47,7 @@ fun HomeView(navController: NavController, modifier: Modifier = Modifier){
             Button(onClick = {
                 navController.navigate("listFuncionamento")
             }) {
-                Text(text = "horários de funcionamento")
+                Text(text = "gerir presenças")
             }
 
             Button(onClick = {
