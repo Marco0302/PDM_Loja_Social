@@ -6,7 +6,10 @@ import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Date
+import java.util.Locale
 
 object HorariosRepository {
     val db by lazy { FirebaseFirestore.getInstance() }
@@ -120,11 +123,14 @@ object HorariosRepository {
                     if (document != null && document.contains("nome")) {
                         val nomeUtilizador = document.getString("nome") ?: "Nome Desconhecido"
 
+                        val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        val currentDate = dateFormatter.format(Date())
+
                         val solicitacao = CandidaturaHorarioFuncionamento(
                             id = "",
                             nome = nomeUtilizador,
                             estado = "Pendente",
-                            data = LocalDateTime.now().toString()
+                            data = currentDate.toString()
                         )
 
                         db.collection("horariosFuncionamento")
