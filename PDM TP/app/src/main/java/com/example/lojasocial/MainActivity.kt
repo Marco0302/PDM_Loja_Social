@@ -33,6 +33,7 @@ import com.example.lojasocial.ui.theme.home.HomeView
 import com.example.lojasocial.ui.theme.home.HomeViewVoluntario
 import com.example.lojasocial.ui.theme.home.HorariosFuncionamentoView
 import com.example.lojasocial.ui.theme.login.LoginView
+import com.example.lojasocial.ui.theme.login.ResetPasswordView
 import com.example.lojasocial.ui.theme.register.RegisterView
 import com.example.lojasocial.ui.theme.transacoes.AddTransactionView
 import com.example.lojasocial.ui.theme.transacoes.ListTransactionView
@@ -125,6 +126,9 @@ class MainActivity : ComponentActivity() {
                             EditBeneficiarioView(navController, id)
                         }
 
+                        composable("recuperarPalavraPasse"){
+                            ResetPasswordView(navController)
+                        }
 
 
                         //Horarios Funcionamento
