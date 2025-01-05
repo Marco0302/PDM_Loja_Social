@@ -121,7 +121,7 @@ fun ConfirmationDialog(id: String, onConfirm: () -> Unit, onDismiss: () -> Unit)
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
                 HorariosRepository.addSolicitacaoPresenca(id)
-                Text("Sim", color = Color.Red)
+                Text("Sim")
             }
         },
         dismissButton = {
