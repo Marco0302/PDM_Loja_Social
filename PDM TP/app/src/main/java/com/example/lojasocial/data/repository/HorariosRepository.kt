@@ -40,16 +40,74 @@ object HorariosRepository {
     ) {
         db.collection("horariosFuncionamento")
             .addSnapshotListener { querySnapshot, error ->
-                if (error != null)
-                {
+                if (error != null) {
                     onFailure(error)
-                } else
-                {
-                    val lista = querySnapshot?.toObjects(HorarioFuncionamento::class.java).orEmpty()
-                    onSuccess(lista)
+                } else {
+                    if (querySnapshot != null) {
+                        val documents = querySnapshot.documents
+
+                        // Lista final onde armazenaremos os HorarioFuncionamento
+                        // já com o campo vagasDisponiveis calculado
+                        val finalList = mutableListOf<HorarioFuncionamento>()
+
+                        // Se não há nenhum documento
+                        if (documents.isEmpty()) {
+                            onSuccess(emptyList())
+                            return@addSnapshotListener
+                        }
+
+                        var docsProcessed = 0
+
+                        // Para cada horário
+                        for (doc in documents) {
+                            val horario = doc.toObject(HorarioFuncionamento::class.java)
+                            if (horario != null) {
+                                val horarioId = doc.id
+
+                                // Buscar presenças "Confirmado"
+                                db.collection("horariosFuncionamento")
+                                    .document(horarioId)
+                                    .collection("solicitacoesPresenca")
+                                    .whereEqualTo("estado", "Confirmado")
+                                    .get()
+                                    .addOnSuccessListener { subSnap ->
+                                        // Nº de presenças confirmadas
+                                        val confirmadosCount = subSnap.size()
+
+                                        // Calcula vagasDisponiveis = numeroMaxVoluntarios - confirmadosCount
+                                        val vagasDisponiveisCalculadas = horario.numeroMaxVoluntarios - confirmadosCount
+
+                                        val horarioAtualizado = horario.copy(
+                                            id = horarioId,
+                                            // Aqui sobrescrevemos o campo vagasDisponiveis
+                                            // com a subtração
+                                            vagasDisponiveis = vagasDisponiveisCalculadas
+                                        )
+                                        finalList.add(horarioAtualizado)
+
+                                        docsProcessed++
+                                        if (docsProcessed == documents.size) {
+                                            onSuccess(finalList)
+                                        }
+                                    }
+                                    .addOnFailureListener { subError ->
+                                        onFailure(subError)
+                                    }
+                            } else {
+                                // Se não conseguiu converter este doc num HorarioFuncionamento
+                                docsProcessed++
+                                if (docsProcessed == documents.size) {
+                                    onSuccess(finalList)
+                                }
+                            }
+                        }
+                    } else {
+                        onSuccess(emptyList())
+                    }
                 }
             }
     }
+
 
     fun addSolicitacaoPresenca(diaFuncionamentoID: String) {
         val user = FirebaseAuth.getInstance().currentUser
