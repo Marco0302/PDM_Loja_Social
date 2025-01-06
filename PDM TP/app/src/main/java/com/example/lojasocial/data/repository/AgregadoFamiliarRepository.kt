@@ -1,14 +1,13 @@
 package com.example.lojasocial.data.repository
 
 import com.example.lojasocial.data.models.AgregadoFamiliar
-import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 object AgregadoFamiliarRepository {
     private val db by lazy { Firebase.firestore }
 
-    fun fetchItems(
+    fun getAll(
         listTypeId: String,
         onSuccess: (List<AgregadoFamiliar>) -> Unit,
         onFailure: (String) -> Unit
@@ -29,13 +28,13 @@ object AgregadoFamiliarRepository {
     }
 
     fun addAgregadoFamiliar(
-        listTypeId: String, name: String, parentesco: String, onSuccess: () -> Unit, onFailure: (String) -> Unit){
-        val listItem = AgregadoFamiliar(id = "", nome = name, parentesco = parentesco)
+        beneficiarioId: String, name: String, parentesco: String, onSuccess: () -> Unit, onFailure: (String) -> Unit){
+        val agregado = AgregadoFamiliar(id = "", nome = name, parentesco = parentesco)
 
-        BeneficiarioRepository.db.collection("beneficiario")
-            .document(listTypeId)
+        db.collection("beneficiario")
+            .document(beneficiarioId)
             .collection("agregadoFamiliar")
-            .add(listItem)
+            .add(agregado)
             .addOnSuccessListener {
                 onSuccess()
             }

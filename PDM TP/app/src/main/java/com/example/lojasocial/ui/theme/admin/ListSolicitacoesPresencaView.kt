@@ -16,13 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.lojasocial.data.models.AgregadoFamiliar
 import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.example.lojasocial.ui.theme.bars.TopBar
-import com.example.lojasocial.ui.theme.usercontrol.BeneficiarioCard
-import com.example.lojasocial.data.repository.AgregadoFamiliarRepository.fetchItems
 import com.example.lojasocial.data.repository.CandidaturaHorarioFuncionamentoRepository
-import com.example.lojasocial.ui.theme.usercontrol.AgregadoFamiliarCard
 
 @Composable
 fun ListSolicitacaoPresencaView(navController: NavController, diaFuncionamentoId: String) {
@@ -33,7 +29,7 @@ fun ListSolicitacaoPresencaView(navController: NavController, diaFuncionamentoId
     // Função para recarregar a lista
     fun carregarSolicitacoes() {
         isLoading = true
-        CandidaturaHorarioFuncionamentoRepository.fetchItems(
+        CandidaturaHorarioFuncionamentoRepository.getAll(
             listId = diaFuncionamentoId,
             onSuccess = { fetchedItems ->
                 itemsSolicitacao = fetchedItems

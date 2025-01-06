@@ -21,7 +21,6 @@ object EstatisticasRepository {
             .addOnSuccessListener { querySnapshot ->
                 val beneficiarios = querySnapshot.documents.mapNotNull { doc ->
                     val benef = doc.toObject(Beneficiario::class.java)
-                    // Se converter certo, guardamos o doc.id no 'id' do Beneficiario
                     benef?.copy(id = doc.id)
                 }
 

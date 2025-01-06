@@ -2,7 +2,6 @@ package com.example.lojasocial.data.repository
 
 import com.example.lojasocial.data.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 object UsersRepository {
     private val db by lazy { FirebaseFirestore.getInstance() }

@@ -1,13 +1,11 @@
 package com.example.lojasocial.data.repository
 
 import android.util.Log
-import com.example.lojasocial.data.models.AgregadoFamiliar
 import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 

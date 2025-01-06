@@ -1,6 +1,5 @@
 package com.example.lojasocial.data.repository
 
-import com.example.lojasocial.data.models.AgregadoFamiliar
 import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -9,7 +8,7 @@ import com.google.firebase.firestore.firestore
 object CandidaturaHorarioFuncionamentoRepository {
     private val db by lazy { Firebase.firestore }
 
-    fun fetchItems(
+    fun getAll(
         listId: String,
         onSuccess: (List<CandidaturaHorarioFuncionamento>) -> Unit,
         onFailure: (String) -> Unit
@@ -19,10 +18,8 @@ object CandidaturaHorarioFuncionamentoRepository {
             .collection("solicitacoesPresenca")
             .get()
             .addOnSuccessListener { querySnapshot ->
-                // Garante que guardamos o doc.id dentro do nosso model
                 val items = querySnapshot.documents.mapNotNull { doc ->
-                    doc.toObject(CandidaturaHorarioFuncionamento::class.java)
-                        ?.copy(id = doc.id) // Aqui armazenamos o doc.id
+                    doc.toObject(CandidaturaHorarioFuncionamento::class.java) ?.copy(id = doc.id)
                 }
                 onSuccess(items)
             }
@@ -31,10 +28,6 @@ object CandidaturaHorarioFuncionamentoRepository {
             }
     }
 
-    /**
-     * Atualiza o campo "estado" (por ex. "Confirmado" ou "Registado")
-     * de um documento específico em solicitacoesPresenca
-     */
     fun updateSolicitacaoEstado(
         horarioId: String,
         solicitacaoId: String,
@@ -90,4 +83,5 @@ object CandidaturaHorarioFuncionamentoRepository {
                 }
         }
     }
+
 }

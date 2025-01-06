@@ -1,13 +1,7 @@
 package com.example.lojasocial.data.repository
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.example.lojasocial.data.models.Pedido
-import com.example.lojasocial.data.models.Transacao
-import com.example.lojasocial.data.repository.HorariosRepository.db
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 
 object PedidoRepository {
     private val db by lazy { FirebaseFirestore.getInstance() }
@@ -48,11 +42,11 @@ object PedidoRepository {
                         onSuccess()
                     }
                     .addOnFailureListener { e ->
-                        onFailure(e.message ?: "Erro ao adicionar pedido")
+                        onFailure(e.message ?: "Erro")
                     }
             }
             .addOnFailureListener { e ->
-                onFailure(e.message ?: "Erro ao adicionar pedido")
+                onFailure(e.message ?: "Erro")
             }
     }
 
@@ -69,7 +63,7 @@ object PedidoRepository {
                 onSuccess()
             }
             .addOnFailureListener { e ->
-                onFailure(e.message ?: "Erro ao atualizar pedido")
+                onFailure(e.message ?: "Erro")
             }
     }
 

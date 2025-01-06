@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import com.example.lojasocial.data.models.AgregadoFamiliar
 import com.example.lojasocial.ui.theme.bars.TopBar
 import com.example.lojasocial.ui.theme.usercontrol.BeneficiarioCard
-import com.example.lojasocial.data.repository.AgregadoFamiliarRepository.fetchItems
+import com.example.lojasocial.data.repository.AgregadoFamiliarRepository.getAll
 import com.example.lojasocial.ui.theme.usercontrol.AgregadoFamiliarCard
 
 @Composable
@@ -29,7 +29,7 @@ fun ListAgregadoFamiliarView(navController: NavController, beneficiarioId: Strin
     var itemList by remember { mutableStateOf(emptyList<AgregadoFamiliar>()) }
 
     LaunchedEffect(beneficiarioId) {
-        fetchItems(
+        getAll(
             listTypeId = beneficiarioId,
             onSuccess = { fetchedItems ->
                 itemList = fetchedItems

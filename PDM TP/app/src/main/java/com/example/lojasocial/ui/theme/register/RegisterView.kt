@@ -40,17 +40,6 @@ fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Preencha os dados",
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 28.sp
-            ),
-            textAlign = TextAlign.Start,
-            modifier = Modifier.fillMaxWidth()
-                .padding(start = 35.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = state.name,

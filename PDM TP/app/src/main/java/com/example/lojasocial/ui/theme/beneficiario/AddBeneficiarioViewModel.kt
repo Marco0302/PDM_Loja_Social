@@ -46,7 +46,7 @@ class AddBeneficiarioViewModel : ViewModel() {
         }
         else
         {
-            BeneficiarioRepository.createBeneficiario(nome, telefone, nacionalidade,
+            BeneficiarioRepository.addBeneficiario(nome, telefone, nacionalidade,
                 onSuccess = onSuccess, onFailure = { }
             )
         }
