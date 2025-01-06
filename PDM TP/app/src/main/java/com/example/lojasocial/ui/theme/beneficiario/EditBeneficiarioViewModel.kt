@@ -2,8 +2,6 @@ package com.example.lojasocial.ui.theme.beneficiario
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import com.example.lojasocial.data.models.Beneficiario
 import com.example.lojasocial.data.repository.BeneficiarioRepository
 
 data class EditListState(

@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lojasocial.data.models.HorarioFuncionamento
 import com.example.lojasocial.data.repository.HorariosRepository
-import java.time.LocalDate
+
 class HorariosViewModel : ViewModel() {
 
     var horariosList by mutableStateOf<List<HorarioFuncionamento>>(emptyList())

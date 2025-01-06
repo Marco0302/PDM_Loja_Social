@@ -25,7 +25,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun RegisterView(navController: NavController, onRegisterSuccess: () -> Unit) {

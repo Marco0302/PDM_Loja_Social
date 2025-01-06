@@ -77,9 +77,7 @@ fun LoginView(navController: NavController, modifier: Modifier = Modifier, onLog
                 Button(onClick = { navController.navigate("register") },)  { Text(text = "Registar") }
             }
 
-            TextButton(onClick = {
-                navController.navigate("recuperarPalavraPasse")
-            }) {
+            TextButton(onClick = { }) {
                 Text("Não sabes a tua palavra-passe?")
             }
 

@@ -1,7 +1,6 @@
 package com.example.lojasocial.ui.theme.diasfuncionamento
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,7 +12,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lojasocial.ui.theme.bars.TopBar
-import com.example.lojasocial.ui.theme.usercontrol.TransactionTypeSelector
 
 @Composable
 fun AddTransactionView(navController: NavController = rememberNavController()) {

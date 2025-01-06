@@ -26,7 +26,6 @@ import com.example.lojasocial.data.models.CandidaturaHorarioFuncionamento
 import com.example.lojasocial.ui.theme.bars.TopBar
 import com.example.lojasocial.data.repository.CandidaturaHorarioFuncionamentoRepository
 import com.example.lojasocial.data.repository.HorariosRepository
-import com.example.lojasocial.ui.theme.usercontrol.AgregadoFamiliarCard
 import com.example.lojasocial.ui.theme.usercontrol.PessoaisSolicitacoesPresencaCard
 
 @Composable

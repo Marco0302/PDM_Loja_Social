@@ -2,7 +2,6 @@ package com.example.lojasocial.ui.theme.pedidos
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.lojasocial.data.repository.AgregadoFamiliarRepository
 import com.example.lojasocial.data.repository.PedidoRepository
 
 data class CreatePedidoState(

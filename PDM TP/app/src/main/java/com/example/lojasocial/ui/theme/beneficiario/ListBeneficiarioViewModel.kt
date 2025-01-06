@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.lojasocial.data.models.Beneficiario
 import com.example.lojasocial.data.repository.BeneficiarioRepository
-import com.example.lojasocial.data.repository.HorariosRepository
 
 data class ListBeneficiarioItemsState(
     val list: List<Beneficiario> = emptyList(),

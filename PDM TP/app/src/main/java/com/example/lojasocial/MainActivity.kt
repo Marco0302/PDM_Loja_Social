@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = "login"
                     )
                     {
+
                         composable("login") {
                             LoginView(navController,
 
@@ -69,14 +70,17 @@ class MainActivity : ComponentActivity() {
                                         "voluntário" -> navController.navigate("homeVoluntario")
                                         "admin" -> navController.navigate("home")
                                         "membro da junta" -> navController.navigate("homeJunta")
-                                        else -> navController.navigate("home")
+                                        "" -> navController.navigate("login")
+                                        else -> navController.navigate("login")
                                     }
                                 }
-                                )
+                            )
                         }
+
                         composable("register"){
                             RegisterView(navController, onRegisterSuccess = { navController.navigate("login") })
                         }
+
                         composable("home") {
                             HomeView(navController)
                         }
@@ -94,6 +98,7 @@ class MainActivity : ComponentActivity() {
                         composable("listTransacao"){
                             ListTransactionView(navController)
                         }
+
                         composable("addTransacao"){
                             AddTransactionView(navController)
                         }
@@ -107,7 +112,6 @@ class MainActivity : ComponentActivity() {
                         composable("addBeneficiario"){
                             AddBeneficiarioView(navController)
                         }
-
 
                         composable(
                             route = "listAgregadoFamiliar/{id}",
@@ -196,19 +200,19 @@ class MainActivity : ComponentActivity() {
                             ListPessoaisSolicitacoesPresencaView(navController, id)
                         }
 
-
                         composable("addHorariosFuncionamento"){
                             HorariosFuncionamentoView(navController)
                         }
 
+                        //Utilizadores Pendentes
                         composable("aceitarUser"){
                             AceitarUsersScreen(navController)
                         }
 
+                        //Estatísticas
                         composable("estatisticas"){
                             EstatisticasScreen(navController)
                         }
-
 
                     }
                 }
@@ -221,11 +225,11 @@ class MainActivity : ComponentActivity() {
                             "voluntário" -> navController.navigate("homeVoluntario")
                             "admin" -> navController.navigate("home")
                             "membro da junta" -> navController.navigate("homeJunta")
-                            else -> navController.navigate("home") // Default
+                            "" -> navController.navigate("login")
+                            else -> navController.navigate("login")
                         }
                     },
                     onFailure = { errorMessage ->
-                        // Tratar erro, como redirecionar para a tela de login
                         navController.navigate("login")
                     }
                 )

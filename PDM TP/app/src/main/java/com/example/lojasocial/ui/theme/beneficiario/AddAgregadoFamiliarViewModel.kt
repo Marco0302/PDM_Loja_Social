@@ -3,7 +3,6 @@ package com.example.lojasocial.ui.theme.beneficiario
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.lojasocial.data.repository.AgregadoFamiliarRepository
-import com.example.lojasocial.data.repository.BeneficiarioRepository
 
 data class CreateAgregadoFamiliarState(
     var nome: String = "",
