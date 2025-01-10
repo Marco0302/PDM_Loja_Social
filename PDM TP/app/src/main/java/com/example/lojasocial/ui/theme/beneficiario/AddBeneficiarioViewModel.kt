@@ -8,6 +8,9 @@ data class AddBeneficiarioState(
     var nome: String = "",
     var telefone: String = "",
     var nacionalidade: String = "",
+    var referencia: String = "",
+    var numeroElementosFamiliar: String = "",
+    var notas: String = "",
     val isLoading: Boolean = false,
     var errorMessage: String? = null
 )
@@ -21,6 +24,12 @@ class AddBeneficiarioViewModel : ViewModel() {
         get() = state.value.telefone
     private val nacionalidade
         get() = state.value.nacionalidade
+    private val referencia
+        get() = state.value.referencia
+    private val numeroElementosFamiliar
+        get() = state.value.numeroElementosFamiliar
+    private val notas
+        get() = state.value.notas
 
     fun onNomeChange(newValue: String) {
         state.value = state.value.copy(nome = newValue)
@@ -32,6 +41,18 @@ class AddBeneficiarioViewModel : ViewModel() {
 
     fun onNacionalidadeChange(newValue: String) {
         state.value = state.value.copy(nacionalidade = newValue)
+    }
+
+    fun onReferenciaChange(newValue: String) {
+        state.value = state.value.copy(referencia = newValue)
+    }
+
+    fun onNumeroELementosFamiliarhange(newValue: String) {
+        state.value = state.value.copy(numeroElementosFamiliar = newValue)
+    }
+
+    fun onNotashange(newValue: String) {
+        state.value = state.value.copy(notas = newValue)
     }
 
     private fun onErrorMessage(error: String){
@@ -46,7 +67,7 @@ class AddBeneficiarioViewModel : ViewModel() {
         }
         else
         {
-            BeneficiarioRepository.addBeneficiario(nome, telefone, nacionalidade,
+            BeneficiarioRepository.addBeneficiario(nome, telefone, nacionalidade, referencia, numeroElementosFamiliar, notas,
                 onSuccess = onSuccess, onFailure = { }
             )
         }

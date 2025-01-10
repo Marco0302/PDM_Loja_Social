@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
@@ -33,6 +36,9 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
                     state.nome = document.getString("nome") ?: ""
                     state.telefone = document.getString("telefone") ?: ""
                     state.nacionalidade = document.getString("nacionalidade") ?: ""
+                    state.referencia = document.getString("referencia") ?: ""
+                    state.numeroElementosFamiliar = document.getString("numeroElementosFamiliar") ?: ""
+                    state.notas = document.getString("notas") ?: ""
                 }
             }
             .addOnFailureListener { e ->
@@ -93,6 +99,49 @@ fun EditBeneficiarioView(navController: NavController, id: String) {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.referencia,
+            onValueChange = viewModel::onReferenciaChange,
+            label = { Text("referencia") },
+            leadingIcon = { Icon(Icons.Filled.Info, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.numeroElementosFamiliar,
+            onValueChange = viewModel::onNumeroELementosFamiliarhange,
+            label = { Text("nº elementos") },
+            leadingIcon = { Icon(Icons.Filled.Face, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.notas,
+            onValueChange = viewModel::onNotashange,
+            label = { Text("notas") },
+            leadingIcon = { Icon(Icons.Filled.Edit, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
 
         Button(
             onClick = {

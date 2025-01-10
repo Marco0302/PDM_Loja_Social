@@ -3,6 +3,10 @@ package com.example.lojasocial.ui.theme.beneficiario
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
@@ -68,6 +72,48 @@ fun AddBeneficiarioView(navController: NavController = rememberNavController()) 
             onValueChange = viewModel::onNacionalidadeChange,
             label = { Text("nacionalidade") },
             leadingIcon = { Icon(Icons.Filled.Place, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.referencia,
+            onValueChange = viewModel::onReferenciaChange,
+            label = { Text("referencia") },
+            leadingIcon = { Icon(Icons.Filled.Info, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.numeroElementosFamiliar,
+            onValueChange = viewModel::onNumeroELementosFamiliarhange,
+            label = { Text("nº elementos") },
+            leadingIcon = { Icon(Icons.Filled.Face, contentDescription = "") },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = state.notas,
+            onValueChange = viewModel::onNotashange,
+            label = { Text("notas") },
+            leadingIcon = { Icon(Icons.Filled.Create, contentDescription = "") },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent

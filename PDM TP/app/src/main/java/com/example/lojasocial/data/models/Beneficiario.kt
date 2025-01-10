@@ -5,5 +5,8 @@ data class Beneficiario(
     var nome: String = "",
     var telefone: String = "",
     var nacionalidade: String = "",
+    var referencia: String = "",
+    var numeroElementosFamiliar: String = "",
+    var notas: String = "",
     val criadoPor: String = ""
 )

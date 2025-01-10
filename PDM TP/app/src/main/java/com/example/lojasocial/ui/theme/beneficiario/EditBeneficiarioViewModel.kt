@@ -8,6 +8,9 @@ data class EditListState(
     var nome: String = "",
     var telefone: String = "",
     var nacionalidade: String = "",
+    var referencia: String = "",
+    var numeroElementosFamiliar: String = "",
+    var notas: String = "",
     val isLoading: Boolean = false,
     var errorMessage: String? = null
 )
@@ -21,7 +24,12 @@ class EditBeneficiarioViewModel : ViewModel() {
         get() = state.value.telefone
     private val nacionalidade
         get() = state.value.nacionalidade
-
+    private val referencia
+        get() = state.value.referencia
+    private val numeroElementosFamiliar
+        get() = state.value.numeroElementosFamiliar
+    private val notas
+        get() = state.value.notas
 
     fun onNomeChange(newValue: String) {
         state.value = state.value.copy(nome = newValue)
@@ -38,6 +46,21 @@ class EditBeneficiarioViewModel : ViewModel() {
         state.value = state.value.copy(errorMessage = null)
     }
 
+    fun onReferenciaChange(newValue: String) {
+        state.value = state.value.copy(referencia = newValue)
+        state.value = state.value.copy(errorMessage = null)
+    }
+
+    fun onNumeroELementosFamiliarhange(newValue: String) {
+        state.value = state.value.copy(numeroElementosFamiliar = newValue)
+        state.value = state.value.copy(errorMessage = null)
+    }
+
+    fun onNotashange(newValue: String) {
+        state.value = state.value.copy(notas = newValue)
+        state.value = state.value.copy(errorMessage = null)
+    }
+
     private fun onErrorMessage(error: String){
         state.value = state.value.copy(errorMessage = error)
     }
@@ -50,7 +73,7 @@ class EditBeneficiarioViewModel : ViewModel() {
         }
         else
         {
-            BeneficiarioRepository.updateBeneficiario(id, nome, telefone, nacionalidade,
+            BeneficiarioRepository.updateBeneficiario(id, nome, telefone, nacionalidade, referencia, numeroElementosFamiliar, notas,
                 onSuccess = onSuccess, onFailure = { })
         }
     }

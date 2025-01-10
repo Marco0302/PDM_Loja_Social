@@ -27,6 +27,9 @@ object BeneficiarioRepository {
         nome: String,
         telefone: String,
         nacionalidade: String,
+        referencia: String,
+        numeroElementos: String,
+        notas: String,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
@@ -71,6 +74,9 @@ object BeneficiarioRepository {
         nome: String,
         telefone: String,
         nacionalidade: String,
+        referencia: String,
+        numeroElementos: String,
+        notas: String,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     )
@@ -79,6 +85,9 @@ object BeneficiarioRepository {
             "nome" to nome,
             "telefone" to telefone,
             "nacionalidade" to nacionalidade,
+            "referencia" to referencia,
+            "numeroElementosFamiliar" to numeroElementos,
+            "notas" to notas
         )
 
         db.collection("beneficiario")
