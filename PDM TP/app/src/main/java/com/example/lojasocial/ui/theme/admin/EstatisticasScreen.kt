@@ -1,10 +1,16 @@
 package com.example.lojasocial.ui.theme.relatorios
 
 import android.content.Context
+import android.graphics.pdf.PdfDocument
+import android.os.Environment
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,13 +22,11 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-
-/**
- * Exemplo de ViewModel que carrega dados (nacionalidadeMap, visitasAnoMap)
- * vindos do  Repositório, e expõe para a UI.
- */
 import com.example.lojasocial.data.repository.EstatisticasRepository
 import com.example.lojasocial.ui.theme.bars.TopBar
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class EstatisticasViewModel : ViewModel() {
 
@@ -99,6 +103,15 @@ fun EstatisticasScreen(
                 )
             }
 
+            Button(
+                onClick = { exportPdf() },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(text = "Exportar")
+            }
+
             // PieChart (Nacionalidades)
             Text(
                 text = "Visitas por Nacionalidade",
@@ -123,6 +136,8 @@ fun EstatisticasScreen(
                     .fillMaxWidth()
                     .height(350.dp) // Ajuste para ficar maior
             )
+
+
         }
     }
 }
@@ -225,3 +240,51 @@ fun MPAndroidBarChart(
         }
     )
 }
+
+fun exportPdf() {
+    // Criar uma instância de PdfDocument
+    val pdfDocument = PdfDocument()
+
+    // Configurar uma página no PDF
+    val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
+    val page = pdfDocument.startPage(pageInfo)
+
+    // Obter o Canvas da página
+    val canvas = page.canvas
+
+    // Adicionar conteúdo no Canvas
+    val text = """
+        Portugal - 2
+        Espanha - 3
+        França - 4
+    """.trimIndent()
+    canvas.drawText(text, 10f, 50f, android.graphics.Paint())
+
+    // Finalizar a página
+    pdfDocument.finishPage(page)
+
+    // Criar um diretório onde o PDF será salvo, caso não exista
+    val docsFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Relatorios")
+
+    // Verificar se o diretório existe, caso contrário, criá-lo
+    if (!docsFolder.exists()) {
+        docsFolder.mkdirs()  // Cria a pasta se não existir
+    }
+
+    // Definir o caminho completo para o arquivo PDF
+    val outputDirectory = File(docsFolder, "Relatorio.pdf")
+
+    try {
+        // Escrever o conteúdo do PDF no arquivo
+        pdfDocument.writeTo(FileOutputStream(outputDirectory))
+        println("PDF exportado com sucesso: ${outputDirectory.absolutePath}")
+    } catch (e: IOException) {
+        e.printStackTrace()
+    } finally {
+        // Fechar o documento PDF
+        pdfDocument.close()
+    }
+}
+
+
+
